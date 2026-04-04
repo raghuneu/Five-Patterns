@@ -1,7 +1,8 @@
-````markdown
 # Chapter 4: Five Patterns, Five Trade-offs
 
 ## How the architecture you choose determines what breaks — not the model you use
+
+![Hero: Architectural constraints as control in agentic systems](../assets/hero/hero.png)
 
 > _Every agentic system failure is an architectural failure. The model executed exactly what the architecture permitted. The question is never why the model failed — it is why the architecture allowed it to._
 
@@ -15,7 +16,10 @@ In production, the same agent ran for forty-seven minutes before the monitoring 
 
 The developer's first instinct was to blame the model. The model, after all, was the thing that seemed to be "thinking" — the thing deciding whether the report was finished, whether another revision was needed, whether the task was complete. Surely the model had made some error in judgment. Surely it had gotten confused.
 
-It had not. The developer built an open loop and expected the model to close it. The model has no concept of "enough." It generates the next token. That is all it does. The architecture had no exit condition beyond the model's own assessment of completion. The model's assessment never converged. The architecture had no opinion about this. It simply kept running.
+It had not. The developer built an open loop and expected the model to close it. But a language model is not an agent with goals — it is a function that maps input text to a probability distribution over the next word. It does not evaluate whether a task is complete; it has no such evaluation. It produces the next token that is statistically likely given everything before it. That is all it does. Termination is not a model property. It is an architectural property. The architecture had no exit condition beyond the model's own assessment of completion. The model's assessment never converged. The architecture had no opinion about this. It simply kept running.
+
+![Fig 0: Token generation stateless loop vs architectural gate](../assets/diagrams/Fig 0.png)
+*Figure 0: Token generation has no intrinsic termination condition (left). The loop limit and done signal are architectural gates that sit outside the model (right).*
 
 This is the central confusion that produces the majority of agentic system failures in practice: the belief that the model is the unit of control. It is not. The model is the engine. The architecture is the vehicle. An engine does not decide when to stop — that decision belongs to the structure built around it. When an agent loops forever, the question is not what the model was thinking. The question is what the architecture permitted.
 
@@ -42,6 +46,9 @@ In the second step, the agent generates an _action_: a call to a specific tool i
 In the third step, the environment returns an _observation_: the actual output of the tool call. The observation is appended to the context, and the cycle begins again. The agent's next thought now has access to everything that came before: the original question, all prior thoughts, all prior actions, and all prior observations.
 
 Termination occurs when the agent generates a thought that includes a `FINISH` signal — a designated token or structured output indicating the answer is ready — or when an external loop limit forces termination. Both exit paths are necessary: the done signal handles the happy path, and the loop limit handles every other path.
+
+![Fig 1: ReAct Think-Act-Observe cycle with dual exit paths](../assets/diagrams/Fig 1.png)
+*Figure 1: Two exit conditions bound the ReAct loop. Removing either eliminates the architecture's only termination constraint.*
 
 ### The Design Decision
 
@@ -77,7 +84,6 @@ def react_loop(question, tools, max_steps=10):
     # Loop limit reached — return best available answer
     return extract_best_answer(context)
 ```
-````
 
 The loop limit (`max_steps`) is not optional. It is the architectural constraint that prevents runaway execution. The done signal is what makes the agent useful. The loop limit is what makes it safe. A system with only a done signal trusts the model to converge. A system with only a loop limit always fails with a timeout. You need both.
 
@@ -108,6 +114,9 @@ The Planner operates once, at T=0. Its output is a structured plan: an ordered l
 The separation between planner and executor is the core architectural idea. The planner reasons about the whole task at once. The executor focuses on one step at a time. This division prevents the executor from losing sight of the overall goal, and it prevents the planner from getting bogged down in execution details.
 
 The critical design choice is whether the plan is _immutable_ — fixed at T=0 and executed without modification — or _revisable_ — subject to replanning when the executor encounters unexpected conditions. Immutable plans are simpler, faster, and more predictable. Revisable plans are more robust but introduce a new failure mode: the replanning decision itself can fail.
+
+![Fig 2A: Plan-and-Execute normal state architecture](../assets/diagrams/Fig 2A.png)
+*Figure 2A: Separation means each component sees only what it needs. This prevents goal drift but creates the stale plan vulnerability.*
 
 ### The Design Decision
 
@@ -154,7 +163,10 @@ The `plan_store.execute_step()` call writes to the `EXECUTION_PLANS` table in Sn
 
 **Stale plan execution.** The causal chain: the planner creates a plan at T=0 that assumes a specific external data source is available → at T=2, that data source returns a schema change or becomes unavailable → the executor, following the immutable plan, attempts to parse the response using the T=0 schema → the parsing produces structurally valid but semantically wrong data → downstream sections are written using incorrect figures → the final report contains internally consistent but factually wrong analysis.
 
-The failure is particularly dangerous because it is silent. The system does not crash. It does not raise an exception. It produces output. The output looks like a report. The stale plan failure is only detectable by a human who reads the report carefully enough to notice that the numbers do not match the cited sources.
+The failure is particularly dangerous because it is silent. The system does not crash. It does not raise an exception. It produces output. The output looks like a report. Automated validation cannot catch it because the pipeline produces a structurally well-formed output at every step — no exception is raised, no schema is violated, no confidence score drops — and the semantic wrongness of the figures is only visible to someone who knows what the correct figures should be. The stale plan failure is only detectable by a human who reads the report carefully enough to notice that the numbers do not match the cited sources.
+
+![Fig 2: Stale plan failure timeline](../assets/diagrams/Fig 2.png)
+*Figure 2: The planner commits to Schema v1 at T=0. When the world changes at T=2, the executor has no mechanism to detect the divergence.*
 
 ### The Exercise
 
@@ -172,9 +184,14 @@ A code review agent is given a Python function and asked to improve it: fix bugs
 
 The Reflection pattern separates a generative pass from an evaluative pass. A Generator produces an initial output. A Critic — which may be the same underlying model with a different prompt — evaluates that output against a set of explicit criteria and produces a structured critique with numeric scores. The Generator then revises the output based on the critique. This cycle repeats until either the Critic's score crosses a defined quality threshold or a maximum number of revision rounds is reached.
 
-The evaluative pass is the architectural innovation. Without it, the generator has no signal about whether its output is improving. With it, the generator receives structured, criteria-specific feedback that conditions each revision. The quality of the Critic's criteria is therefore the determining factor in the pattern's effectiveness — not the quality of the Generator.
+The evaluative pass is the architectural innovation. Without it, the generator has no signal about whether its output is improving. With it, the generator receives structured, criteria-specific feedback that conditions each revision.
 
-The key insight is that the generator and the critic use the same underlying model, but with different prompts. The generator prompt says "write a thorough code review." The critic prompt says "score this review from 1–10 on completeness, accuracy, and specificity." The separation of concerns is in the prompts, not in the models. The architecture creates the illusion of two agents from one model by switching the instruction frame.
+Criteria quality is the more actionable determinant of the pattern's effectiveness. A stronger model with incoherent criteria will oscillate; a weaker model with precise, internally consistent criteria will converge. The failure mode described below is criteria failure, not model failure — which is why the fix is always criteria revision, never model upgrade.
+
+![Fig 3A: Criteria quality vs model quality ablation grid](../assets/diagrams/Fig 3A.png)
+*Figure 3A: Criteria quality is the actionable determinant. A stronger model with contradictory criteria oscillates more articulately — making the failure harder to detect.*
+
+The key insight is that the generator and the critic use the same underlying model, but with different prompts. The generator prompt says "write a thorough code review." The critic prompt says "score this review from 1–10 on completeness, accuracy, and specificity." The separation of concerns is in the prompts, not in the models. The architecture creates functionally distinct agents from a single model by switching the prompt frame: the generator prompt conditions the model to produce, and the critic prompt conditions the same model to evaluate. Because the model's output is a function of its input, a different instruction context produces a different output behavior. The separation of concerns is real — it lives in the prompts, not in the weights.
 
 ### The Design Decision
 
@@ -228,6 +245,9 @@ The `reflection_logger.log_round()` call writes every iteration to `REFLECTION_R
 
 The oscillation is the diagnostic signature of contradictory criteria. If you observe a reflection system's scores across rounds and see alternating highs and lows rather than monotonic improvement, you are watching contradictory criteria in operation. The fix is not more rounds. The fix is criteria revision.
 
+![Fig 3: Reflection convergence vs oscillation](../assets/diagrams/Fig 3 Convergence.png)
+*Figure 3: Oscillating scores are the diagnostic signature of contradictory criteria. The fix is always criteria revision — never model upgrade.*
+
 ### The Exercise
 
 Open the notebook. Find the cell labeled **"Pattern 3: Reflection — Working Demo."** Modify the `CRITERIA` list to add two contradictory entries: `"Response must be under 50 words"` and `"Response must include at least three concrete examples with full explanation."` Set `max_rounds` to `8`. Run the cell. Use `reflection_logger.get_convergence_data(session_id)` to retrieve the round-by-round scores from Snowflake and plot the non-converging oscillation curve. Then remove one contradictory criterion and rerun. Compare the two convergence plots.
@@ -246,9 +266,12 @@ The multi-agent pattern distributes a complex task across multiple specialized a
 
 Each specialist agent operates within a defined role boundary: a structured description of what it is responsible for, what it is not responsible for, and what format its outputs must conform to. The handoff protocol specifies how outputs are transferred between agents — what metadata accompanies the transfer, what acknowledgment is required, and what happens if the receiving agent cannot accept the handoff.
 
-The message bus is the architectural backbone. It decouples agents from each other — the Researcher does not need to know the Writer exists. It also provides observability: every message is logged with sender, recipient, content, and delivery status in the `AGENT_MESSAGES` table. When something goes wrong, you can reconstruct the exact sequence of communications.
+The message bus is the coupling and observability mechanism. It decouples agents from each other — the Researcher does not need to know the Writer exists. It also provides observability: every message is logged with sender, recipient, content, and delivery status in the `AGENT_MESSAGES` table. When something goes wrong, you can reconstruct the exact sequence of communications.
 
 The Orchestrator does not execute tasks itself. It routes, monitors, and assembles. This separation is the source of the pattern's power and its fragility.
+
+![Fig 4A: Orchestrator sequence diagram](../assets/diagrams/Fig 4A.png)
+*Figure 4A: The Orchestrator routes and assembles. It never calls a tool directly. Execution is always inside the specialist's swim lane.*
 
 ### The Design Decision
 
@@ -287,6 +310,9 @@ The `timeout_seconds` parameter in `receive_message` is the constraint that conv
 
 Deadlock is distinct from timeout. A timeout occurs when one agent takes too long. A deadlock occurs when agents are collectively waiting for each other — and neither will ever receive what it needs without the other acting first. Timeout policies catch individual agent failures. Deadlock requires cycle detection at the Orchestrator level. Without it, the `AGENT_MESSAGES` table will show two messages permanently stuck in `status = 'pending'`, each waiting for the other to resolve first.
 
+![Fig 4: Multi-agent topology and deadlock](../assets/diagrams/Fig 4.png)
+*Figure 4: Deadlock is topological — it emerges from the handoff protocol, not from any individual agent's failure.*
+
 ### The Exercise
 
 Open the notebook. Find the cell labeled **"Pattern 4: Multi-Agent — Working Demo."** After the initial message exchange, add a call to `bus.create_deadlock("writer", "reviewer")`. Then attempt `bus.receive_message("writer", timeout_seconds=5)`. Observe the `DeadlockError` raised when the timeout expires. Query the `AGENT_MESSAGES` table to see both messages marked with `status = 'deadlocked'` and note how the circular dependency is visible in the sender-recipient pairs.
@@ -303,13 +329,16 @@ A personal productivity assistant helps a user manage their schedule, communicat
 
 Memory-augmented agents, grounded in the retrieval-augmented generation literature (Lewis et al., 2020), maintain two distinct memory stores with different access patterns.
 
-Short-term memory holds the current conversation context — everything said in the present session. It lives in the active context window and is discarded when the session ends.
+Short-term memory holds the current conversation context — everything said in the present session. It lives in the active context window — the bounded block of text the model receives as input on each call, typically measured in thousands of tokens — and is discarded when the session ends.
 
 Long-term memory persists across sessions in an external store — in our case, the `AGENT_MEMORY` table in Snowflake. Each memory entry contains the content, a timestamp, a keyword field for retrieval, and a source tag indicating how it was created.
 
 The retrieval layer sits between the agent and the long-term store. When the agent processes a new user input, it queries long-term memory using keyword matching on the `embedding_text` column. Retrieved memories are prepended to the prompt as context. The agent then generates its response conditioned on both the current input and the retrieved history. It treats retrieved memories with the same authority as the system prompt — which is both the feature and the vulnerability.
 
 The write path is the architectural decision that receives insufficient attention in most implementations. When should a memory be written? What information is worth storing? How are contradictory memories resolved? The answers to these questions determine whether the long-term store becomes an asset or a liability.
+
+![Fig 5: Memory-augmented architecture and context poisoning](../assets/diagrams/Fig 5.png)
+*Figure 5: The retrieval layer trusts all stored memories equally. A poisoned record is indistinguishable from a valid one.*
 
 ### The Design Decision
 
@@ -354,7 +383,7 @@ The validation check before `write_memory` is what most production implementatio
 
 **Context poisoning.** The causal chain: a false memory is written to the `AGENT_MEMORY` table — through a direct injection, a buggy prior session, or an agent that hallucinated and persisted the hallucination → on a subsequent session, keyword matching retrieves this corrupted memory → the agent incorporates it as ground truth because the retrieval layer has no verification mechanism → the agent produces a confident, well-structured, wrong answer grounded in false context.
 
-This is not a hallucination. The agent is not making things up. It is faithfully following instructions grounded in data it was given. The data was wrong. The architecture did not validate it. The failure is invisible to the end user — the response is fluent, specific, and correctly formatted. Only someone who knows the user's actual preferences would notice. This makes context poisoning one of the hardest failure modes to detect in production.
+This is not hallucination, and the distinction is mechanistically important. Hallucination occurs when a model generates a token sequence that is statistically plausible but factually unsupported — the model is confabulating from its weights. Context poisoning is the opposite failure: the model is behaving correctly, faithfully conditioning its output on what it was given. The data it was given is wrong. The architecture did not validate it before writing it to the persistent store, and does not validate it on retrieval. The model's faithfulness is the mechanism of the failure. A hallucinating model is generating fiction; a context-poisoned model is accurately reporting a corrupted record. This makes context poisoning one of the hardest failure modes to detect in production — the response is fluent, specific, and correctly formatted. Only someone who knows the user's actual preferences would notice.
 
 ### The Exercise
 
@@ -367,21 +396,24 @@ Open the notebook. Find the cell labeled **"Pattern 5: Memory — Working Demo."
 When you face a new task, work through these diagnostic questions in order:
 
 **1. Is the task decomposable into stable, ordered subtasks?**
-If the task has clear sequential dependencies and the environment is unlikely to change mid-execution, use **Plan-and-Execute**. The structure prevents losing track of where you are. The risk is staleness — plan for it explicitly.
+If the task has clear sequential dependencies and the environment is unlikely to change mid-execution, use **Plan-and-Execute**. The structure prevents losing track of where you are. The risk is staleness — plan for it explicitly. _(Mechanism: separates planning from execution so the executor never loses global task structure.)_
 
 **2. Does the task require iterative tool use with observable, real-time outcomes?**
-If the agent needs to search, compute, or query external systems and adjust its approach based on what it finds, use **ReAct**. The think-act-observe loop handles dynamic information gathering where you cannot predict in advance how many steps are needed.
+If the agent needs to search, compute, or query external systems and adjust its approach based on what it finds, use **ReAct**. The think-act-observe loop handles dynamic information gathering where you cannot predict in advance how many steps are needed. _(Mechanism: interleaves reasoning traces with tool calls so each action is conditioned on observed results.)_
 
 **3. Does output quality need to be verifiable against explicit criteria?**
-If you can define what "good enough" looks like as a scoring rubric, use **Reflection**. The generator-critic loop will iterate toward that standard. The risk is conflicting criteria — audit your rubric before you build the loop.
+If you can define what "good enough" looks like as a scoring rubric, use **Reflection**. The generator-critic loop will iterate toward that standard. The risk is conflicting criteria — audit your rubric before you build the loop. _(Mechanism: separates generation from evaluation so the producer receives structured, criteria-specific feedback.)_
 
 **4. Does the task span multiple distinct domains requiring specialized expertise?**
-If no single agent can credibly cover all aspects of the task without degradation, use **Multi-Agent Collaboration**. Specialized roles with clear handoffs outperform one overloaded generalist. The risk is coordination overhead — every agent boundary is a potential deadlock.
+If no single agent can credibly cover all aspects of the task without degradation, use **Multi-Agent Collaboration**. Specialized roles with clear handoffs outperform one overloaded generalist. The risk is coordination overhead — every agent boundary is a potential deadlock. _(Mechanism: distributes task load across role-bounded specialists connected by an observable message bus.)_
 
 **5. Does the task require context from previous interactions?**
-If the agent must remember preferences, history, or accumulated knowledge across sessions, use **Memory-Augmented**. Persistent retrieval enables personalization and continuity. The risk is trust — every retrieved memory is an unverified input.
+If the agent must remember preferences, history, or accumulated knowledge across sessions, use **Memory-Augmented**. Persistent retrieval enables personalization and continuity. The risk is trust — every retrieved memory is an unverified input. _(Mechanism: retrieves validated prior context into the active prompt so each session is conditioned on accumulated history.)_
 
 **When multiple criteria apply — start with the simpler pattern.** Complexity is a cost, not a feature. A ReAct agent that solves the problem in five iterations is better than a multi-agent system that solves it in three messages between four agents. Reach for coordination only when a single agent demonstrably cannot hold the full task in context.
+
+![Fig 6: Pattern selection decision tree](../assets/diagrams/Fig 6.png)
+*Figure 6: Work through these questions in order. The first YES determines your pattern.*
 
 ---
 
@@ -403,13 +435,16 @@ Read this table as a constraint map, not a leaderboard. The pattern with the low
 
 There is a seductive narrative about large language models that goes roughly as follows: as models become more capable, architectural constraints become less necessary. Smarter models make better decisions. Better decisions mean fewer guardrails required. This narrative is wrong, and the failure modes documented in this chapter explain precisely why.
 
-A smarter model in a ReAct loop without a loop limit is a model that reasons more fluently toward no conclusion. A smarter model in a Plan-and-Execute pipeline with an immutable plan is a model that executes stale assumptions with greater confidence. A smarter model in a Reflection loop with contradictory criteria oscillates more articulately. A smarter model reading a poisoned memory produces a more convincing wrong answer. Model capability and architectural soundness are orthogonal properties. Improving one does not compensate for deficiencies in the other.
+A smarter model in a ReAct loop without a loop limit is a model that reasons more fluently toward no conclusion. A smarter model in a Plan-and-Execute pipeline with an immutable plan is a model that executes stale assumptions with greater confidence. A smarter model in a Reflection loop with contradictory criteria oscillates more articulately. A smarter model reading a poisoned memory produces a more convincing wrong answer. Model capability and architectural soundness operate on independent axes. The failure modes documented in this chapter are not capability failures — they are structural gaps that a more capable model will navigate more fluently toward the same wrong outcome. Improving the model does not close an architectural gap. It makes the gap harder to see.
 
 The patterns in this chapter are not workarounds for weak models. They are the structural expression of what a reliable agent is allowed to do. The loop limit is not a crutch for a model that cannot decide when to stop — it is the system's formal commitment to bounded execution. The plan validation step is not a check on the planner's intelligence — it is the architecture's assertion that internal consistency is a property of the plan, not of the model that generated it. The memory validation layer is not distrust of the retrieval system — it is the acknowledgment that a persistent store that can be written to can also be corrupted, and that this possibility must be structurally managed.
 
 When an agent fails, the forensic question is always the same: what did the architecture permit that it should not have? The answer to that question is the fix. Not a better model. A better constraint.
 
-The architecture is not the thing that runs the model. It is the thing that decides what the model is allowed to do.
+The architecture is not the thing that runs the model. It is the thing that decides what the model is allowed to do. Chapter 5 extends this logic to the failure modes that emerge not from a single pattern applied incorrectly, but from patterns composed together — where the constraints of one architectural layer interact with, and sometimes undermine, the constraints of another.
+
+![Fig 7: Model capability vs architectural soundness orthogonality quadrant](../assets/diagrams/Fig 7.png)
+*Figure 7: Improving the model does not close an architectural gap — it makes the gap harder to see.*
 
 ---
 
@@ -428,5 +463,3 @@ The architecture is not the thing that runs the model. It is the thing that deci
 6. Wu, Q., Bansal, G., Zhang, J., Wu, Y., Li, B., Zhu, E., Jiang, L., Zhang, X., Zhang, S., Liu, J., Awadallah, A. H., White, R. W., Burger, D., & Wang, C. (2023). _AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation._ arXiv:2308.08155.
 
 7. Wang, L., Ma, C., Feng, X., Zhang, Z., Yang, H., Zhang, J., Chen, Z., Tang, J., Chen, X., Lin, Y., Zhao, W. X., Wei, Z., & Wen, J.-R. (2024). _A Survey on Large Language Model based Autonomous Agents._ Frontiers of Computer Science, 18(6).
-
----

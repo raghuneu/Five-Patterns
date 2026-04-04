@@ -7,157 +7,193 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   body {
-    font-family: Georgia, 'Times New Roman', system-ui, serif;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 2rem 1.25rem 4rem;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 18px;
     line-height: 1.75;
     color: #1a1a1a;
     background: #fff;
+    margin: 0;
+    padding: 40px 20px 80px;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
   }
   h1 {
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 2.5rem;
+    font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 2.6em;
+    font-weight: 800;
     text-align: center;
-    margin-bottom: 0.25rem;
-    line-height: 1.2;
+    margin: 0 0 0.15em;
+    line-height: 1.15;
     color: #111;
   }
   .subtitle {
+    font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 1.15em;
     text-align: center;
-    font-size: 1.1rem;
     color: #555;
-    font-style: italic;
-    margin-bottom: 2.5rem;
+    margin: 0 0 2em;
+    font-weight: 400;
   }
   h2 {
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 1.5rem;
-    margin-top: 3rem;
-    margin-bottom: 1rem;
-    padding-left: 0.75rem;
-    border-left: 4px solid #4F46E5;
+    font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 1.55em;
+    font-weight: 700;
     color: #1e1b4b;
+    margin: 2.5em 0 0.6em;
+    padding-left: 16px;
+    border-left: 4px solid #4F46E5;
     line-height: 1.3;
   }
   h3 {
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 1.15rem;
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
+    font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    font-size: 1.15em;
+    font-weight: 700;
     color: #333;
+    margin: 2em 0 0.5em;
   }
-  p { margin: 0 0 1.1rem; }
+  p {
+    margin: 0 0 1.15em;
+  }
   hr {
     border: none;
-    border-top: 1px solid #e5e5e5;
-    margin: 2.5rem 0;
+    border-top: 1px solid #e0e0e0;
+    margin: 3em 0;
   }
+  a { color: #4F46E5; text-decoration: underline; }
+  em { font-style: italic; }
+  strong { font-weight: 700; }
   pre {
     background: #1e1e1e;
     color: #d4d4d4;
     border-radius: 6px;
     padding: 16px;
     overflow-x: auto;
-    font-size: 0.85rem;
+    font-size: 0.82em;
     line-height: 1.55;
-    margin: 1.25rem 0;
+    margin: 1.5em 0;
   }
   code {
-    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-family: 'SF Mono', 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
     font-size: 0.88em;
   }
-  p code, li code {
-    background: #f3f4f6;
-    padding: 0.15em 0.35em;
-    border-radius: 3px;
-    color: #d6336c;
-    font-size: 0.85em;
-  }
   pre code {
+    font-size: inherit;
     background: none;
     padding: 0;
     color: inherit;
-    font-size: inherit;
   }
-  .failure-mode {
-    border-left: 4px solid #EF4444;
-    background: #FEF2F2;
-    padding: 1rem 1.25rem;
-    margin: 1.25rem 0;
-    border-radius: 0 6px 6px 0;
+  p code, li code {
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #c7254e;
   }
-  .failure-mode p:first-child { margin-top: 0; }
-  .failure-mode p:last-child { margin-bottom: 0; }
-  .exercise {
-    border-left: 4px solid #22C55E;
-    background: #f0fdf4;
-    padding: 1rem 1.25rem;
-    margin: 1.25rem 0;
-    border-radius: 0 6px 6px 0;
-  }
-  .exercise p:first-child { margin-top: 0; }
-  .exercise p:last-child { margin-bottom: 0; }
   .pull-quote {
-    font-size: 1.35rem;
+    font-size: 1.35em;
     font-style: italic;
     color: #4F46E5;
     text-align: center;
     max-width: 600px;
-    margin: 2.5rem auto;
-    line-height: 1.6;
-    padding: 0 1rem;
+    margin: 2.5em auto;
+    line-height: 1.55;
+    padding: 0 20px;
   }
+  .figure-caption {
+    font-size: 0.88em;
+    color: #666;
+    font-style: italic;
+    margin: 1em 0 1.5em;
+    line-height: 1.55;
+    padding: 12px 16px;
+    background: #f9fafb;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+  }
+  .failure-mode {
+    border-left: 4px solid #EF4444;
+    background: #FEF2F2;
+    padding: 20px 24px;
+    border-radius: 0 6px 6px 0;
+    margin: 1.5em 0;
+  }
+  .failure-mode p:first-child::before {
+    content: '\26A0\FE0F ';
+  }
+  .failure-mode p:last-child { margin-bottom: 0; }
+  .exercise {
+    border-left: 4px solid #22C55E;
+    background: #f0fdf4;
+    padding: 20px 24px;
+    border-radius: 0 6px 6px 0;
+    margin: 1.5em 0;
+  }
+  .exercise p:first-child::before {
+    content: '\1F527 ';
+  }
+  .exercise p:last-child { margin-bottom: 0; }
   table {
     width: 100%;
     border-collapse: collapse;
-    margin: 1.5rem 0;
-    font-size: 0.88rem;
-    line-height: 1.5;
+    margin: 1.5em 0;
+    font-size: 0.88em;
+    line-height: 1.45;
   }
-  thead { position: sticky; top: 0; }
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
   thead th {
-    background: #4F46E5;
+    background: #1e1b4b;
     color: #fff;
-    padding: 0.65rem 0.6rem;
-    text-align: left;
-    font-family: system-ui, -apple-system, sans-serif;
+    font-family: system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
     font-weight: 600;
-    font-size: 0.82rem;
+    text-align: left;
+    padding: 10px 12px;
   }
   tbody tr:nth-child(odd) { background: #f9fafb; }
   tbody tr:nth-child(even) { background: #fff; }
   tbody td {
-    padding: 0.55rem 0.6rem;
+    padding: 10px 12px;
     border-bottom: 1px solid #e5e7eb;
+    vertical-align: top;
   }
   .references {
-    font-size: 0.88rem;
-    line-height: 1.65;
+    font-size: 0.88em;
+    line-height: 1.6;
   }
   .references p {
     padding-left: 2em;
     text-indent: -2em;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.7em;
   }
-  strong { color: #111; }
-  em { color: inherit; }
-  .selection-framework ol {
-    padding-left: 1.25rem;
-    margin: 0;
+  .selection-item {
+    margin-bottom: 1em;
   }
-  .selection-framework li {
-    margin-bottom: 1rem;
+  .selection-item strong {
+    display: block;
+    margin-bottom: 0.2em;
   }
 </style>
 </head>
 <body>
+<div class="container">
 
 <h1>Chapter 4: Five Patterns, Five Trade-offs</h1>
-<p class="subtitle">How the architecture you choose determines what breaks &mdash; not the model you use</p>
+<p class="subtitle">How the architecture you choose determines what breaks&nbsp;&mdash; not the model you use</p>
+
+<figure style="margin: 32px 0; text-align: center;">
+  <img 
+    src="../assets/hero/hero.png" 
+    alt="Hero: Architectural constraints as control in agentic systems"
+    style="width: 100%; border-radius: 8px;"
+  />
+</figure>
 
 <div class="pull-quote">
-Every agentic system failure is an architectural failure. The model executed exactly what the architecture permitted. The question is never why the model failed &mdash; it is why the architecture allowed it to.
+Every agentic system failure is an architectural failure. The model executed exactly what the architecture permitted. The question is never why the model failed&nbsp;&mdash; it is why the architecture allowed it to.
 </div>
 
 <hr>
@@ -168,13 +204,24 @@ Every agentic system failure is an architectural failure. The model executed exa
 
 <p>In production, the same agent ran for forty-seven minutes before the monitoring system cut it off. It had completed hundreds of reasoning cycles. It had never submitted a report.</p>
 
-<p>The developer's first instinct was to blame the model. The model, after all, was the thing that seemed to be "thinking" &mdash; the thing deciding whether the report was finished, whether another revision was needed, whether the task was complete. Surely the model had made some error in judgment. Surely it had gotten confused.</p>
+<p>The developer's first instinct was to blame the model. The model, after all, was the thing that seemed to be "thinking"&nbsp;&mdash; the thing deciding whether the report was finished, whether another revision was needed, whether the task was complete. Surely the model had made some error in judgment. Surely it had gotten confused.</p>
 
-<p>It had not. The developer built an open loop and expected the model to close it. The model has no concept of "enough." It generates the next token. That is all it does. The architecture had no exit condition beyond the model's own assessment of completion. The model's assessment never converged. The architecture had no opinion about this. It simply kept running.</p>
+<p>It had not. The developer built an open loop and expected the model to close it. But a language model is not an agent with goals&nbsp;&mdash; it is a function that maps input text to a probability distribution over the next word. It does not evaluate whether a task is complete; it has no such evaluation. It produces the next token that is statistically likely given everything before it. That is all it does. Termination is not a model property. It is an architectural property. The architecture had no exit condition beyond the model's own assessment of completion. The model's assessment never converged. The architecture had no opinion about this. It simply kept running.</p>
 
-<p>This is the central confusion that produces the majority of agentic system failures in practice: the belief that the model is the unit of control. It is not. The model is the engine. The architecture is the vehicle. An engine does not decide when to stop &mdash; that decision belongs to the structure built around it. When an agent loops forever, the question is not what the model was thinking. The question is what the architecture permitted.</p>
+<figure style="margin: 32px 0; text-align: center;">
+  <img 
+    src="../assets/diagrams/Fig 0.png" 
+    alt="Figure 0: Token generation stateless loop vs architectural gate"
+    style="width: 100%; border-radius: 6px; border: 1px solid #e5e7eb;"
+  />
+  <figcaption style="margin-top: 8px; font-size: 0.875rem; color: #6b7280; font-style: italic; text-align: center;">
+    Figure 0: Token generation has no intrinsic termination condition (left). The loop limit and done signal are architectural gates that sit outside the model (right).
+  </figcaption>
+</figure>
 
-<p>This chapter is about five architectural patterns that prevent five specific failure modes. Each pattern is not a recipe for making agents smarter. Each pattern is a <em>constraint</em> &mdash; a structural limitation on what the agent is allowed to do. Constraints are what make agents reliable. An agent without constraints is not powerful; it is uncontrollable. The five patterns we will examine are five different answers to the same question: <em>what structural boundary prevents the specific failure that would otherwise occur?</em></p>
+<p>This is the central confusion that produces the majority of agentic system failures in practice: the belief that the model is the unit of control. It is not. The model is the engine. The architecture is the vehicle. An engine does not decide when to stop&nbsp;&mdash; that decision belongs to the structure built around it. When an agent loops forever, the question is not what the model was thinking. The question is what the architecture permitted.</p>
+
+<p>This chapter is about five architectural patterns that prevent five specific failure modes. Each pattern is not a recipe for making agents smarter. Each pattern is a <em>constraint</em>&nbsp;&mdash; a structural limitation on what the agent is allowed to do. Constraints are what make agents reliable. An agent without constraints is not powerful; it is uncontrollable. The five patterns we will examine are five different answers to the same question: <em>what structural boundary prevents the specific failure that would otherwise occur?</em></p>
 
 <p>For each pattern, we will build the working version, then deliberately break it. Because if you cannot produce the failure, you do not understand the architecture.</p>
 
@@ -184,23 +231,34 @@ Every agentic system failure is an architectural failure. The model executed exa
 
 <h3>The Scenario</h3>
 
-<p>A user asks an agent: "What was the GDP of France in 2023, and how does it compare to Germany's GDP in the same year?" The agent cannot answer this from memory alone &mdash; it needs to look up two separate figures, then perform a comparison. It must reason about what to search for, act by calling a search tool, observe the result, reason again about what it still needs, and act again. This is the task ReAct was designed for.</p>
+<p>A user asks an agent: "What was the GDP of France in 2023, and how does it compare to Germany's GDP in the same year?" The agent cannot answer this from memory alone&nbsp;&mdash; it needs to look up two separate figures, then perform a comparison. It must reason about what to search for, act by calling a search tool, observe the result, reason again about what it still needs, and act again. This is the task ReAct was designed for.</p>
 
 <h3>The Mechanism</h3>
 
-<p>The ReAct pattern &mdash; introduced by Yao et al. (2022) and formalized as an interleaving of reasoning traces and action calls &mdash; operates through a three-step cycle that repeats until a termination condition is met.</p>
+<p>The ReAct pattern&nbsp;&mdash; introduced by Yao et al. (2022) and formalized as an interleaving of reasoning traces and action calls&nbsp;&mdash; operates through a three-step cycle that repeats until a termination condition is met.</p>
 
 <p>In the first step, the agent generates a <em>thought</em>: a natural-language reasoning trace that articulates what it currently knows, what it does not know, and what action would be most useful next. This thought is not submitted to any external system. It is internal reasoning made explicit, and it serves two functions: it conditions the next action call, and it produces an interpretable audit trail of the agent's decision-making.</p>
 
-<p>In the second step, the agent generates an <em>action</em>: a call to a specific tool in its registry, with specific parameters. The action is deterministic in the sense that it is a structured command &mdash; <code>search("France GDP 2023")</code>, for example &mdash; not a free-form request.</p>
+<p>In the second step, the agent generates an <em>action</em>: a call to a specific tool in its registry, with specific parameters. The action is deterministic in the sense that it is a structured command&nbsp;&mdash; <code>search("France GDP 2023")</code>, for example&nbsp;&mdash; not a free-form request.</p>
 
 <p>In the third step, the environment returns an <em>observation</em>: the actual output of the tool call. The observation is appended to the context, and the cycle begins again. The agent's next thought now has access to everything that came before: the original question, all prior thoughts, all prior actions, and all prior observations.</p>
 
-<p>Termination occurs when the agent generates a thought that includes a <code>FINISH</code> signal &mdash; a designated token or structured output indicating the answer is ready &mdash; or when an external loop limit forces termination. Both exit paths are necessary: the done signal handles the happy path, and the loop limit handles every other path.</p>
+<p>Termination occurs when the agent generates a thought that includes a <code>FINISH</code> signal&nbsp;&mdash; a designated token or structured output indicating the answer is ready&nbsp;&mdash; or when an external loop limit forces termination. Both exit paths are necessary: the done signal handles the happy path, and the loop limit handles every other path.</p>
+
+<figure style="margin: 32px 0; text-align: center;">
+  <img 
+    src="../assets/diagrams/Fig 1.png" 
+    alt="Figure 1: ReAct Think-Act-Observe cycle with dual exit paths"
+    style="width: 100%; border-radius: 6px; border: 1px solid #e5e7eb;"
+  />
+  <figcaption style="margin-top: 8px; font-size: 0.875rem; color: #6b7280; font-style: italic; text-align: center;">
+    Figure 1: Two exit conditions bound the ReAct loop. Removing either eliminates the architecture's only termination constraint.
+  </figcaption>
+</figure>
 
 <h3>The Design Decision</h3>
 
-<p>You build three things: a tool registry that defines which external actions the agent can take, a loop structure that alternates between reasoning and acting, and an exit condition that determines when the loop terminates. The tool registry is a whitelist &mdash; the agent cannot call tools that are not registered. This is a security boundary as much as a design choice.</p>
+<p>You build three things: a tool registry that defines which external actions the agent can take, a loop structure that alternates between reasoning and acting, and an exit condition that determines when the loop terminates. The tool registry is a whitelist&nbsp;&mdash; the agent cannot call tools that are not registered. This is a security boundary as much as a design choice.</p>
 
 <pre><code>def react_loop(question, tools, max_steps=10):
     context = [{"role": "user", "content": question}]
@@ -234,13 +292,12 @@ Every agentic system failure is an architectural failure. The model executed exa
 <p>The loop limit (<code>max_steps</code>) is not optional. It is the architectural constraint that prevents runaway execution. The done signal is what makes the agent useful. The loop limit is what makes it safe. A system with only a done signal trusts the model to converge. A system with only a loop limit always fails with a timeout. You need both.</p>
 
 <div class="failure-mode">
-<p><strong>&#9888;&#65039; Failure Mode: Infinite reasoning loop.</strong> The causal chain: the loop limit is removed &rarr; the agent reasons without any convergence criterion &rarr; each reasoning step generates a new "I should also check&hellip;" thought &rarr; the agent never produces the <code>FINISH</code> signal &rarr; execution continues indefinitely &rarr; the session times out or exhausts the token budget.</p>
-
-<p>This failure looks like intelligence. The agent is "being thorough." It is researching more, considering edge cases, refining its analysis. But it is not converging. Without the architectural constraint of a loop limit, thoroughness and infinite loops are indistinguishable. The logs will show a coherent chain of reasoning &mdash; each step logical, each tool call relevant &mdash; that simply never ends. The model is not malfunctioning. The architecture is missing a wall.</p>
+<p><strong>Infinite reasoning loop.</strong> The causal chain: the loop limit is removed &rarr; the agent reasons without any convergence criterion &rarr; each reasoning step generates a new "I should also check&hellip;" thought &rarr; the agent never produces the <code>FINISH</code> signal &rarr; execution continues indefinitely &rarr; the session times out or exhausts the token budget.</p>
+<p>This failure looks like intelligence. The agent is "being thorough." It is researching more, considering edge cases, refining its analysis. But it is not converging. Without the architectural constraint of a loop limit, thoroughness and infinite loops are indistinguishable. The logs will show a coherent chain of reasoning&nbsp;&mdash; each step logical, each tool call relevant&nbsp;&mdash; that simply never ends. The model is not malfunctioning. The architecture is missing a wall.</p>
 </div>
 
 <div class="exercise">
-<p><strong>&#128295; Exercise.</strong> Open the notebook. Find the cell labeled <strong>"Pattern 1: ReAct &mdash; Working Demo."</strong> Locate the <code>max_steps</code> variable, currently set to <code>10</code>. Change it to <code>None</code>. Run the cell. Observe how the agent continues reasoning long past the point where it has a sufficient answer, generating increasingly tangential search queries. Check the <code>LLM_CALL_LOG</code> table via <code>cortex_llm.get_call_history(pattern_name='react')</code> to see the token cost accumulate with each unnecessary iteration. Then restore <code>max_steps</code> to <code>10</code> and compare the outputs.</p>
+<p><strong>Exercise.</strong> Open the notebook. Find the cell labeled <strong>"Pattern 1: ReAct&nbsp;&mdash; Working Demo."</strong> Locate the <code>max_steps</code> variable, currently set to <code>10</code>. Change it to <code>None</code>. Run the cell. Observe how the agent continues reasoning long past the point where it has a sufficient answer, generating increasingly tangential search queries. Check the <code>LLM_CALL_LOG</code> table via <code>cortex_llm.get_call_history(pattern_name='react')</code> to see the token cost accumulate with each unnecessary iteration. Then restore <code>max_steps</code> to <code>10</code> and compare the outputs.</p>
 </div>
 
 <hr>
@@ -249,7 +306,7 @@ Every agentic system failure is an architectural failure. The model executed exa
 
 <h3>The Scenario</h3>
 
-<p>A manager asks an agent to produce a quarterly business report. The agent must gather sales data from a database, pull market trends from a news API, write an executive summary, draft three section narratives, and format the final document. These steps have dependencies &mdash; you cannot write the executive summary before you have the data &mdash; and the order matters. The subtasks are known in advance and stable. This is the task Plan-and-Execute was designed for.</p>
+<p>A manager asks an agent to produce a quarterly business report. The agent must gather sales data from a database, pull market trends from a news API, write an executive summary, draft three section narratives, and format the final document. These steps have dependencies&nbsp;&mdash; you cannot write the executive summary before you have the data&nbsp;&mdash; and the order matters. The subtasks are known in advance and stable. This is the task Plan-and-Execute was designed for.</p>
 
 <h3>The Mechanism</h3>
 
@@ -259,7 +316,18 @@ Every agentic system failure is an architectural failure. The model executed exa
 
 <p>The separation between planner and executor is the core architectural idea. The planner reasons about the whole task at once. The executor focuses on one step at a time. This division prevents the executor from losing sight of the overall goal, and it prevents the planner from getting bogged down in execution details.</p>
 
-<p>The critical design choice is whether the plan is <em>immutable</em> &mdash; fixed at T=0 and executed without modification &mdash; or <em>revisable</em> &mdash; subject to replanning when the executor encounters unexpected conditions. Immutable plans are simpler, faster, and more predictable. Revisable plans are more robust but introduce a new failure mode: the replanning decision itself can fail.</p>
+<p>The critical design choice is whether the plan is <em>immutable</em>&nbsp;&mdash; fixed at T=0 and executed without modification&nbsp;&mdash; or <em>revisable</em>&nbsp;&mdash; subject to replanning when the executor encounters unexpected conditions. Immutable plans are simpler, faster, and more predictable. Revisable plans are more robust but introduce a new failure mode: the replanning decision itself can fail.</p>
+
+<figure style="margin: 32px 0; text-align: center;">
+  <img 
+    src="../assets/diagrams/Fig 2A.png" 
+    alt="Figure 2A: Plan-and-Execute normal state architecture"
+    style="width: 100%; border-radius: 6px; border: 1px solid #e5e7eb;"
+  />
+  <figcaption style="margin-top: 8px; font-size: 0.875rem; color: #6b7280; font-style: italic; text-align: center;">
+    Figure 2A: Separation means each component sees only what it needs. This prevents goal drift but creates the stale plan vulnerability.
+  </figcaption>
+</figure>
 
 <h3>The Design Decision</h3>
 
@@ -298,16 +366,26 @@ Every agentic system failure is an architectural failure. The model executed exa
 
     return results</code></pre>
 
-<p>The <code>plan_store.execute_step()</code> call writes to the <code>EXECUTION_PLANS</code> table in Snowflake, creating a full audit trail of what was planned versus what happened. This is what makes the stale plan failure observable &mdash; you can query the table and see exactly where world state diverged from plan assumptions.</p>
+<p>The <code>plan_store.execute_step()</code> call writes to the <code>EXECUTION_PLANS</code> table in Snowflake, creating a full audit trail of what was planned versus what happened. This is what makes the stale plan failure observable&nbsp;&mdash; you can query the table and see exactly where world state diverged from plan assumptions.</p>
 
 <div class="failure-mode">
-<p><strong>&#9888;&#65039; Failure Mode: Stale plan execution.</strong> The causal chain: the planner creates a plan at T=0 that assumes a specific external data source is available &rarr; at T=2, that data source returns a schema change or becomes unavailable &rarr; the executor, following the immutable plan, attempts to parse the response using the T=0 schema &rarr; the parsing produces structurally valid but semantically wrong data &rarr; downstream sections are written using incorrect figures &rarr; the final report contains internally consistent but factually wrong analysis.</p>
-
-<p>The failure is particularly dangerous because it is silent. The system does not crash. It does not raise an exception. It produces output. The output looks like a report. The stale plan failure is only detectable by a human who reads the report carefully enough to notice that the numbers do not match the cited sources.</p>
+<p><strong>Stale plan execution.</strong> The causal chain: the planner creates a plan at T=0 that assumes a specific external data source is available &rarr; at T=2, that data source returns a schema change or becomes unavailable &rarr; the executor, following the immutable plan, attempts to parse the response using the T=0 schema &rarr; the parsing produces structurally valid but semantically wrong data &rarr; downstream sections are written using incorrect figures &rarr; the final report contains internally consistent but factually wrong analysis.</p>
+<p>The failure is particularly dangerous because it is silent. The system does not crash. It does not raise an exception. It produces output. The output looks like a report. Automated validation cannot catch it because the pipeline produces a structurally well-formed output at every step&nbsp;&mdash; no exception is raised, no schema is violated, no confidence score drops&nbsp;&mdash; and the semantic wrongness of the figures is only visible to someone who knows what the correct figures should be. The stale plan failure is only detectable by a human who reads the report carefully enough to notice that the numbers do not match the cited sources.</p>
 </div>
 
+<figure style="margin: 32px 0; text-align: center;">
+  <img 
+    src="../assets/diagrams/Fig 2.png" 
+    alt="Figure 2: Stale plan failure timeline"
+    style="width: 100%; border-radius: 6px; border: 1px solid #e5e7eb;"
+  />
+  <figcaption style="margin-top: 8px; font-size: 0.875rem; color: #6b7280; font-style: italic; text-align: center;">
+    Figure 2: The planner commits to Schema v1 at T=0. When the world changes at T=2, the executor has no mechanism to detect the divergence.
+  </figcaption>
+</figure>
+
 <div class="exercise">
-<p><strong>&#128295; Exercise.</strong> Open the notebook. Find the cell labeled <strong>"Pattern 2: Plan-and-Execute &mdash; Working Demo."</strong> After the plan is stored, add a call to <code>plan_store.inject_world_state_change(step_number=2)</code>. Run the full pipeline. Inspect the final output and identify the exact point at which the stale data propagates. Query the <code>EXECUTION_PLANS</code> table to see <code>is_stale = TRUE</code> on the affected step and compare the planned assumptions against the actual world state recorded at execution time.</p>
+<p><strong>Exercise.</strong> Open the notebook. Find the cell labeled <strong>"Pattern 2: Plan-and-Execute&nbsp;&mdash; Working Demo."</strong> After the plan is stored, add a call to <code>plan_store.inject_world_state_change(step_number=2)</code>. Run the full pipeline. Inspect the final output and identify the exact point at which the stale data propagates. Query the <code>EXECUTION_PLANS</code> table to see <code>is_stale = TRUE</code> on the affected step and compare the planned assumptions against the actual world state recorded at execution time.</p>
 </div>
 
 <hr>
@@ -320,11 +398,24 @@ Every agentic system failure is an architectural failure. The model executed exa
 
 <h3>The Mechanism</h3>
 
-<p>The Reflection pattern separates a generative pass from an evaluative pass. A Generator produces an initial output. A Critic &mdash; which may be the same underlying model with a different prompt &mdash; evaluates that output against a set of explicit criteria and produces a structured critique with numeric scores. The Generator then revises the output based on the critique. This cycle repeats until either the Critic's score crosses a defined quality threshold or a maximum number of revision rounds is reached.</p>
+<p>The Reflection pattern separates a generative pass from an evaluative pass. A Generator produces an initial output. A Critic&nbsp;&mdash; which may be the same underlying model with a different prompt&nbsp;&mdash; evaluates that output against a set of explicit criteria and produces a structured critique with numeric scores. The Generator then revises the output based on the critique. This cycle repeats until either the Critic's score crosses a defined quality threshold or a maximum number of revision rounds is reached.</p>
 
-<p>The evaluative pass is the architectural innovation. Without it, the generator has no signal about whether its output is improving. With it, the generator receives structured, criteria-specific feedback that conditions each revision. The quality of the Critic's criteria is therefore the determining factor in the pattern's effectiveness &mdash; not the quality of the Generator.</p>
+<p>The evaluative pass is the architectural innovation. Without it, the generator has no signal about whether its output is improving. With it, the generator receives structured, criteria-specific feedback that conditions each revision.</p>
 
-<p>The key insight is that the generator and the critic use the same underlying model, but with different prompts. The generator prompt says "write a thorough code review." The critic prompt says "score this review from 1&ndash;10 on completeness, accuracy, and specificity." The separation of concerns is in the prompts, not in the models. The architecture creates the illusion of two agents from one model by switching the instruction frame.</p>
+<p>Criteria quality is the more actionable determinant of the pattern's effectiveness. A stronger model with incoherent criteria will oscillate; a weaker model with precise, internally consistent criteria will converge. The failure mode described below is criteria failure, not model failure&nbsp;&mdash; which is why the fix is always criteria revision, never model upgrade.</p>
+
+<figure style="margin: 32px 0; text-align: center;">
+  <img 
+    src="../assets/diagrams/Fig 3A.png" 
+    alt="Figure 3A: Criteria quality vs model quality ablation grid"
+    style="width: 100%; border-radius: 6px; border: 1px solid #e5e7eb;"
+  />
+  <figcaption style="margin-top: 8px; font-size: 0.875rem; color: #6b7280; font-style: italic; text-align: center;">
+    Figure 3A: Criteria quality is the actionable determinant. A stronger model with contradictory criteria oscillates more articulately — making the failure harder to detect.
+  </figcaption>
+</figure>
+
+<p>The key insight is that the generator and the critic use the same underlying model, but with different prompts. The generator prompt says "write a thorough code review." The critic prompt says "score this review from 1&ndash;10 on completeness, accuracy, and specificity." The separation of concerns is in the prompts, not in the models. The architecture creates functionally distinct agents from a single model by switching the prompt frame: the generator prompt conditions the model to produce, and the critic prompt conditions the same model to evaluate. Because the model's output is a function of its input, a different instruction context produces a different output behavior. The separation of concerns is real&nbsp;&mdash; it lives in the prompts, not in the weights.</p>
 
 <h3>The Design Decision</h3>
 
@@ -368,16 +459,26 @@ Every agentic system failure is an architectural failure. The model executed exa
     return output, Warning(f"Did not converge in {max_rounds} rounds. "
                            f"Final score: {score:.2f}")</code></pre>
 
-<p>The <code>reflection_logger.log_round()</code> call writes every iteration to <code>REFLECTION_ROUNDS</code>, enabling post-hoc analysis of how the score evolved and whether convergence was achievable. The fallback return after <code>max_rounds</code> is critical &mdash; it ensures the system always produces output, even if that output did not meet the threshold.</p>
+<p>The <code>reflection_logger.log_round()</code> call writes every iteration to <code>REFLECTION_ROUNDS</code>, enabling post-hoc analysis of how the score evolved and whether convergence was achievable. The fallback return after <code>max_rounds</code> is critical&nbsp;&mdash; it ensures the system always produces output, even if that output did not meet the threshold.</p>
 
 <div class="failure-mode">
-<p><strong>&#9888;&#65039; Failure Mode: Non-converging reflection.</strong> The causal chain: the criteria set includes two standards that cannot be simultaneously satisfied &mdash; for example, "maximize conciseness" and "include comprehensive inline documentation" &rarr; no output can satisfy both criteria simultaneously &rarr; the Generator produces output that satisfies one criterion &rarr; the Critic penalizes it for failing the other &rarr; the Generator revises to satisfy the second criterion &rarr; the Critic penalizes it for failing the first &rarr; the score oscillates between two values, neither of which crosses the threshold &rarr; the loop exhausts its round limit &rarr; the final output is whichever version happened to be produced last.</p>
-
+<p><strong>Non-converging reflection.</strong> The causal chain: the criteria set includes two standards that cannot be simultaneously satisfied&nbsp;&mdash; for example, "maximize conciseness" and "include comprehensive inline documentation" &rarr; no output can satisfy both criteria simultaneously &rarr; the Generator produces output that satisfies one criterion &rarr; the Critic penalizes it for failing the other &rarr; the Generator revises to satisfy the second criterion &rarr; the Critic penalizes it for failing the first &rarr; the score oscillates between two values, neither of which crosses the threshold &rarr; the loop exhausts its round limit &rarr; the final output is whichever version happened to be produced last.</p>
 <p>The oscillation is the diagnostic signature of contradictory criteria. If you observe a reflection system's scores across rounds and see alternating highs and lows rather than monotonic improvement, you are watching contradictory criteria in operation. The fix is not more rounds. The fix is criteria revision.</p>
 </div>
 
+<figure style="margin: 32px 0; text-align: center;">
+  <img 
+    src="../assets/diagrams/Fig 3 Convergence.png" 
+    alt="Figure 3: Reflection convergence vs oscillation"
+    style="width: 100%; border-radius: 6px; border: 1px solid #e5e7eb;"
+  />
+  <figcaption style="margin-top: 8px; font-size: 0.875rem; color: #6b7280; font-style: italic; text-align: center;">
+    Figure 3: Oscillating scores are the diagnostic signature of contradictory criteria. The fix is always criteria revision — never model upgrade.
+  </figcaption>
+</figure>
+
 <div class="exercise">
-<p><strong>&#128295; Exercise.</strong> Open the notebook. Find the cell labeled <strong>"Pattern 3: Reflection &mdash; Working Demo."</strong> Modify the <code>CRITERIA</code> list to add two contradictory entries: <code>"Response must be under 50 words"</code> and <code>"Response must include at least three concrete examples with full explanation."</code> Set <code>max_rounds</code> to <code>8</code>. Run the cell. Use <code>reflection_logger.get_convergence_data(session_id)</code> to retrieve the round-by-round scores from Snowflake and plot the non-converging oscillation curve. Then remove one contradictory criterion and rerun. Compare the two convergence plots.</p>
+<p><strong>Exercise.</strong> Open the notebook. Find the cell labeled <strong>"Pattern 3: Reflection&nbsp;&mdash; Working Demo."</strong> Modify the <code>CRITERIA</code> list to add two contradictory entries: <code>"Response must be under 50 words"</code> and <code>"Response must include at least three concrete examples with full explanation."</code> Set <code>max_rounds</code> to <code>8</code>. Run the cell. Use <code>reflection_logger.get_convergence_data(session_id)</code> to retrieve the round-by-round scores from Snowflake and plot the non-converging oscillation curve. Then remove one contradictory criterion and rerun. Compare the two convergence plots.</p>
 </div>
 
 <hr>
@@ -392,15 +493,26 @@ Every agentic system failure is an architectural failure. The model executed exa
 
 <p>The multi-agent pattern distributes a complex task across multiple specialized agents that communicate through a shared message bus. An Orchestrator agent receives the high-level goal, decomposes it into role-specific subtasks, routes each subtask to the appropriate specialist agent, and assembles the final output from the specialists' contributions.</p>
 
-<p>Each specialist agent operates within a defined role boundary: a structured description of what it is responsible for, what it is not responsible for, and what format its outputs must conform to. The handoff protocol specifies how outputs are transferred between agents &mdash; what metadata accompanies the transfer, what acknowledgment is required, and what happens if the receiving agent cannot accept the handoff.</p>
+<p>Each specialist agent operates within a defined role boundary: a structured description of what it is responsible for, what it is not responsible for, and what format its outputs must conform to. The handoff protocol specifies how outputs are transferred between agents&nbsp;&mdash; what metadata accompanies the transfer, what acknowledgment is required, and what happens if the receiving agent cannot accept the handoff.</p>
 
-<p>The message bus is the architectural backbone. It decouples agents from each other &mdash; the Researcher does not need to know the Writer exists. It also provides observability: every message is logged with sender, recipient, content, and delivery status in the <code>AGENT_MESSAGES</code> table. When something goes wrong, you can reconstruct the exact sequence of communications.</p>
+<p>The message bus is the coupling and observability mechanism. It decouples agents from each other&nbsp;&mdash; the Researcher does not need to know the Writer exists. It also provides observability: every message is logged with sender, recipient, content, and delivery status in the <code>AGENT_MESSAGES</code> table. When something goes wrong, you can reconstruct the exact sequence of communications.</p>
 
 <p>The Orchestrator does not execute tasks itself. It routes, monitors, and assembles. This separation is the source of the pattern's power and its fragility.</p>
 
+<figure style="margin: 32px 0; text-align: center;">
+  <img 
+    src="../assets/diagrams/Fig 4A.png" 
+    alt="Figure 4A: Orchestrator sequence diagram"
+    style="width: 100%; border-radius: 6px; border: 1px solid #e5e7eb;"
+  />
+  <figcaption style="margin-top: 8px; font-size: 0.875rem; color: #6b7280; font-style: italic; text-align: center;">
+    Figure 4A: The Orchestrator routes and assembles. It never calls a tool directly. Execution is always inside the specialist's swim lane.
+  </figcaption>
+</figure>
+
 <h3>The Design Decision</h3>
 
-<p>The three architectural decisions are role boundary definition, handoff protocol specification, and timeout policy. Role boundaries must be mutually exclusive. Handoff protocols must include explicit acknowledgment &mdash; a message sent is not a message received. Timeout policy must specify what the system does when an agent fails to respond within a defined window.</p>
+<p>The three architectural decisions are role boundary definition, handoff protocol specification, and timeout policy. Role boundaries must be mutually exclusive. Handoff protocols must include explicit acknowledgment&nbsp;&mdash; a message sent is not a message received. Timeout policy must specify what the system does when an agent fails to respond within a defined window.</p>
 
 <pre><code>bus = AgentMessageBus(sf_conn, session_id)
 
@@ -425,16 +537,26 @@ feedback = reviewer_agent.run(
 )
 final = writer_agent.revise(draft, feedback)</code></pre>
 
-<p>The <code>timeout_seconds</code> parameter in <code>receive_message</code> is the constraint that converts a hang into a catchable error. Without it, a single unresponsive agent freezes the entire pipeline indefinitely. All messages are logged to the <code>AGENT_MESSAGES</code> table in Snowflake with sender, recipient, content, and status &mdash; making the coordination graph fully observable.</p>
+<p>The <code>timeout_seconds</code> parameter in <code>receive_message</code> is the constraint that converts a hang into a catchable error. Without it, a single unresponsive agent freezes the entire pipeline indefinitely. All messages are logged to the <code>AGENT_MESSAGES</code> table in Snowflake with sender, recipient, content, and status&nbsp;&mdash; making the coordination graph fully observable.</p>
 
 <div class="failure-mode">
-<p><strong>&#9888;&#65039; Failure Mode: Coordination deadlock.</strong> The causal chain: Agent A is configured to await Agent B's output before proceeding &rarr; Agent B is configured to await Agent A's output before proceeding &rarr; neither agent produces output because each is blocking on the other &rarr; both agents block indefinitely &rarr; the system hangs with no error message and no progress.</p>
-
-<p>Deadlock is distinct from timeout. A timeout occurs when one agent takes too long. A deadlock occurs when agents are collectively waiting for each other &mdash; and neither will ever receive what it needs without the other acting first. Timeout policies catch individual agent failures. Deadlock requires cycle detection at the Orchestrator level. Without it, the <code>AGENT_MESSAGES</code> table will show two messages permanently stuck in <code>status = 'pending'</code>, each waiting for the other to resolve first.</p>
+<p><strong>Coordination deadlock.</strong> The causal chain: Agent A is configured to await Agent B's output before proceeding &rarr; Agent B is configured to await Agent A's output before proceeding &rarr; neither agent produces output because each is blocking on the other &rarr; both agents block indefinitely &rarr; the system hangs with no error message and no progress.</p>
+<p>Deadlock is distinct from timeout. A timeout occurs when one agent takes too long. A deadlock occurs when agents are collectively waiting for each other&nbsp;&mdash; and neither will ever receive what it needs without the other acting first. Timeout policies catch individual agent failures. Deadlock requires cycle detection at the Orchestrator level. Without it, the <code>AGENT_MESSAGES</code> table will show two messages permanently stuck in <code>status = 'pending'</code>, each waiting for the other to resolve first.</p>
 </div>
 
+<figure style="margin: 32px 0; text-align: center;">
+  <img 
+    src="../assets/diagrams/Fig 4.png" 
+    alt="Figure 4: Multi-agent topology and deadlock"
+    style="width: 100%; border-radius: 6px; border: 1px solid #e5e7eb;"
+  />
+  <figcaption style="margin-top: 8px; font-size: 0.875rem; color: #6b7280; font-style: italic; text-align: center;">
+    Figure 4: Deadlock is topological — it emerges from the handoff protocol, not from any individual agent's failure.
+  </figcaption>
+</figure>
+
 <div class="exercise">
-<p><strong>&#128295; Exercise.</strong> Open the notebook. Find the cell labeled <strong>"Pattern 4: Multi-Agent &mdash; Working Demo."</strong> After the initial message exchange, add a call to <code>bus.create_deadlock("writer", "reviewer")</code>. Then attempt <code>bus.receive_message("writer", timeout_seconds=5)</code>. Observe the <code>DeadlockError</code> raised when the timeout expires. Query the <code>AGENT_MESSAGES</code> table to see both messages marked with <code>status = 'deadlocked'</code> and note how the circular dependency is visible in the sender-recipient pairs.</p>
+<p><strong>Exercise.</strong> Open the notebook. Find the cell labeled <strong>"Pattern 4: Multi-Agent&nbsp;&mdash; Working Demo."</strong> After the initial message exchange, add a call to <code>bus.create_deadlock("writer", "reviewer")</code>. Then attempt <code>bus.receive_message("writer", timeout_seconds=5)</code>. Observe the <code>DeadlockError</code> raised when the timeout expires. Query the <code>AGENT_MESSAGES</code> table to see both messages marked with <code>status = 'deadlocked'</code> and note how the circular dependency is visible in the sender-recipient pairs.</p>
 </div>
 
 <hr>
@@ -443,19 +565,30 @@ final = writer_agent.revise(draft, feedback)</code></pre>
 
 <h3>The Scenario</h3>
 
-<p>A personal productivity assistant helps a user manage their schedule, communication style, and task priorities across multiple working sessions. Over three months of use, it has learned that the user prefers bullet-point summaries, works in the healthcare industry, and treats deadlines in the first week of the month as non-negotiable. This accumulated context makes the assistant genuinely useful &mdash; it does not ask the same questions twice, and it calibrates its recommendations to the user's established patterns. This is the task Memory-Augmented Agents were designed for.</p>
+<p>A personal productivity assistant helps a user manage their schedule, communication style, and task priorities across multiple working sessions. Over three months of use, it has learned that the user prefers bullet-point summaries, works in the healthcare industry, and treats deadlines in the first week of the month as non-negotiable. This accumulated context makes the assistant genuinely useful&nbsp;&mdash; it does not ask the same questions twice, and it calibrates its recommendations to the user's established patterns. This is the task Memory-Augmented Agents were designed for.</p>
 
 <h3>The Mechanism</h3>
 
 <p>Memory-augmented agents, grounded in the retrieval-augmented generation literature (Lewis et al., 2020), maintain two distinct memory stores with different access patterns.</p>
 
-<p>Short-term memory holds the current conversation context &mdash; everything said in the present session. It lives in the active context window and is discarded when the session ends.</p>
+<p>Short-term memory holds the current conversation context&nbsp;&mdash; everything said in the present session. It lives in the active context window&nbsp;&mdash; the bounded block of text the model receives as input on each call, typically measured in thousands of tokens&nbsp;&mdash; and is discarded when the session ends.</p>
 
-<p>Long-term memory persists across sessions in an external store &mdash; in our case, the <code>AGENT_MEMORY</code> table in Snowflake. Each memory entry contains the content, a timestamp, a keyword field for retrieval, and a source tag indicating how it was created.</p>
+<p>Long-term memory persists across sessions in an external store&nbsp;&mdash; in our case, the <code>AGENT_MEMORY</code> table in Snowflake. Each memory entry contains the content, a timestamp, a keyword field for retrieval, and a source tag indicating how it was created.</p>
 
-<p>The retrieval layer sits between the agent and the long-term store. When the agent processes a new user input, it queries long-term memory using keyword matching on the <code>embedding_text</code> column. Retrieved memories are prepended to the prompt as context. The agent then generates its response conditioned on both the current input and the retrieved history. It treats retrieved memories with the same authority as the system prompt &mdash; which is both the feature and the vulnerability.</p>
+<p>The retrieval layer sits between the agent and the long-term store. When the agent processes a new user input, it queries long-term memory using keyword matching on the <code>embedding_text</code> column. Retrieved memories are prepended to the prompt as context. The agent then generates its response conditioned on both the current input and the retrieved history. It treats retrieved memories with the same authority as the system prompt&nbsp;&mdash; which is both the feature and the vulnerability.</p>
 
 <p>The write path is the architectural decision that receives insufficient attention in most implementations. When should a memory be written? What information is worth storing? How are contradictory memories resolved? The answers to these questions determine whether the long-term store becomes an asset or a liability.</p>
+
+<figure style="margin: 32px 0; text-align: center;">
+  <img 
+    src="../assets/diagrams/Fig 5.png" 
+    alt="Figure 5: Memory-augmented architecture and context poisoning"
+    style="width: 100%; border-radius: 6px; border: 1px solid #e5e7eb;"
+  />
+  <figcaption style="margin-top: 8px; font-size: 0.875rem; color: #6b7280; font-style: italic; text-align: center;">
+    Figure 5: The retrieval layer trusts all stored memories equally. A poisoned record is indistinguishable from a valid one.
+  </figcaption>
+</figure>
 
 <h3>The Design Decision</h3>
 
@@ -495,108 +628,124 @@ def respond(user_input):
 <p>The validation check before <code>write_memory</code> is what most production implementations omit. Without it, every session writes unchecked memories. With it, contradictions are caught before they enter the store. This single architectural decision is the difference between a memory system that helps and one that poisons.</p>
 
 <div class="failure-mode">
-<p><strong>&#9888;&#65039; Failure Mode: Context poisoning.</strong> The causal chain: a false memory is written to the <code>AGENT_MEMORY</code> table &mdash; through a direct injection, a buggy prior session, or an agent that hallucinated and persisted the hallucination &rarr; on a subsequent session, keyword matching retrieves this corrupted memory &rarr; the agent incorporates it as ground truth because the retrieval layer has no verification mechanism &rarr; the agent produces a confident, well-structured, wrong answer grounded in false context.</p>
-
-<p>This is not a hallucination. The agent is not making things up. It is faithfully following instructions grounded in data it was given. The data was wrong. The architecture did not validate it. The failure is invisible to the end user &mdash; the response is fluent, specific, and correctly formatted. Only someone who knows the user's actual preferences would notice. This makes context poisoning one of the hardest failure modes to detect in production.</p>
+<p><strong>Context poisoning.</strong> The causal chain: a false memory is written to the <code>AGENT_MEMORY</code> table&nbsp;&mdash; through a direct injection, a buggy prior session, or an agent that hallucinated and persisted the hallucination &rarr; on a subsequent session, keyword matching retrieves this corrupted memory &rarr; the agent incorporates it as ground truth because the retrieval layer has no verification mechanism &rarr; the agent produces a confident, well-structured, wrong answer grounded in false context.</p>
+<p>This is not hallucination, and the distinction is mechanistically important. Hallucination occurs when a model generates a token sequence that is statistically plausible but factually unsupported&nbsp;&mdash; the model is confabulating from its weights. Context poisoning is the opposite failure: the model is behaving correctly, faithfully conditioning its output on what it was given. The data it was given is wrong. The architecture did not validate it before writing it to the persistent store, and does not validate it on retrieval. The model's faithfulness is the mechanism of the failure. A hallucinating model is generating fiction; a context-poisoned model is accurately reporting a corrupted record. This makes context poisoning one of the hardest failure modes to detect in production&nbsp;&mdash; the response is fluent, specific, and correctly formatted. Only someone who knows the user's actual preferences would notice.</p>
 </div>
 
 <div class="exercise">
-<p><strong>&#128295; Exercise.</strong> Open the notebook. Find the cell labeled <strong>"Pattern 5: Memory &mdash; Working Demo."</strong> After writing the initial set of valid memories, call <code>mem.poison_memory(memory_id, "User prefers extremely verbose, jargon-heavy prose")</code> using the memory ID returned from the write step. Then run the retrieval and generation cells. Observe how the agent's output contradicts the user's actual preferences. Query <code>AGENT_MEMORY</code> and note the <code>is_poisoned = TRUE</code> flag on the corrupted record. Re-enable validation and repeat. Identify which query would have produced the most consequential wrong recommendation.</p>
+<p><strong>Exercise.</strong> Open the notebook. Find the cell labeled <strong>"Pattern 5: Memory&nbsp;&mdash; Working Demo."</strong> After writing the initial set of valid memories, call <code>mem.poison_memory(memory_id, "User prefers extremely verbose, jargon-heavy prose")</code> using the memory ID returned from the write step. Then run the retrieval and generation cells. Observe how the agent's output contradicts the user's actual preferences. Query <code>AGENT_MEMORY</code> and note the <code>is_poisoned = TRUE</code> flag on the corrupted record. Re-enable validation and repeat. Identify which query would have produced the most consequential wrong recommendation.</p>
 </div>
 
 <hr>
 
 <h2>Pattern Selection Framework</h2>
 
-<div class="selection-framework">
+<p>When you face a new task, work through these diagnostic questions in order:</p>
 
-<p><strong>1. Is the task decomposable into stable, ordered subtasks?</strong><br>
-If the task has clear sequential dependencies and the environment is unlikely to change mid-execution, use <strong>Plan-and-Execute</strong>. The structure prevents losing track of where you are. The risk is staleness &mdash; plan for it explicitly.</p>
-
-<p><strong>2. Does the task require iterative tool use with observable, real-time outcomes?</strong><br>
-If the agent needs to search, compute, or query external systems and adjust its approach based on what it finds, use <strong>ReAct</strong>. The think-act-observe loop handles dynamic information gathering where you cannot predict in advance how many steps are needed.</p>
-
-<p><strong>3. Does output quality need to be verifiable against explicit criteria?</strong><br>
-If you can define what "good enough" looks like as a scoring rubric, use <strong>Reflection</strong>. The generator-critic loop will iterate toward that standard. The risk is conflicting criteria &mdash; audit your rubric before you build the loop.</p>
-
-<p><strong>4. Does the task span multiple distinct domains requiring specialized expertise?</strong><br>
-If no single agent can credibly cover all aspects of the task without degradation, use <strong>Multi-Agent Collaboration</strong>. Specialized roles with clear handoffs outperform one overloaded generalist. The risk is coordination overhead &mdash; every agent boundary is a potential deadlock.</p>
-
-<p><strong>5. Does the task require context from previous interactions?</strong><br>
-If the agent must remember preferences, history, or accumulated knowledge across sessions, use <strong>Memory-Augmented</strong>. Persistent retrieval enables personalization and continuity. The risk is trust &mdash; every retrieved memory is an unverified input.</p>
-
-<p><strong>When multiple criteria apply &mdash; start with the simpler pattern.</strong> Complexity is a cost, not a feature. A ReAct agent that solves the problem in five iterations is better than a multi-agent system that solves it in three messages between four agents. Reach for coordination only when a single agent demonstrably cannot hold the full task in context.</p>
-
+<div class="selection-item">
+<strong>1. Is the task decomposable into stable, ordered subtasks?</strong>
+If the task has clear sequential dependencies and the environment is unlikely to change mid-execution, use <strong>Plan-and-Execute</strong>. The structure prevents losing track of where you are. The risk is staleness&nbsp;&mdash; plan for it explicitly. <em>(Mechanism: separates planning from execution so the executor never loses global task structure.)</em>
 </div>
+
+<div class="selection-item">
+<strong>2. Does the task require iterative tool use with observable, real-time outcomes?</strong>
+If the agent needs to search, compute, or query external systems and adjust its approach based on what it finds, use <strong>ReAct</strong>. The think-act-observe loop handles dynamic information gathering where you cannot predict in advance how many steps are needed. <em>(Mechanism: interleaves reasoning traces with tool calls so each action is conditioned on observed results.)</em>
+</div>
+
+<div class="selection-item">
+<strong>3. Does output quality need to be verifiable against explicit criteria?</strong>
+If you can define what "good enough" looks like as a scoring rubric, use <strong>Reflection</strong>. The generator-critic loop will iterate toward that standard. The risk is conflicting criteria&nbsp;&mdash; audit your rubric before you build the loop. <em>(Mechanism: separates generation from evaluation so the producer receives structured, criteria-specific feedback.)</em>
+</div>
+
+<div class="selection-item">
+<strong>4. Does the task span multiple distinct domains requiring specialized expertise?</strong>
+If no single agent can credibly cover all aspects of the task without degradation, use <strong>Multi-Agent Collaboration</strong>. Specialized roles with clear handoffs outperform one overloaded generalist. The risk is coordination overhead&nbsp;&mdash; every agent boundary is a potential deadlock. <em>(Mechanism: distributes task load across role-bounded specialists connected by an observable message bus.)</em>
+</div>
+
+<div class="selection-item">
+<strong>5. Does the task require context from previous interactions?</strong>
+If the agent must remember preferences, history, or accumulated knowledge across sessions, use <strong>Memory-Augmented</strong>. Persistent retrieval enables personalization and continuity. The risk is trust&nbsp;&mdash; every retrieved memory is an unverified input. <em>(Mechanism: retrieves validated prior context into the active prompt so each session is conditioned on accumulated history.)</em>
+</div>
+
+<p><strong>When multiple criteria apply&nbsp;&mdash; start with the simpler pattern.</strong> Complexity is a cost, not a feature. A ReAct agent that solves the problem in five iterations is better than a multi-agent system that solves it in three messages between four agents. Reach for coordination only when a single agent demonstrably cannot hold the full task in context.</p>
+
+<figure style="margin: 32px 0; text-align: center;">
+  <img 
+    src="../assets/diagrams/Fig 6.png" 
+    alt="Figure 6: Pattern selection decision tree"
+    style="width: 100%; border-radius: 6px; border: 1px solid #e5e7eb;"
+  />
+  <figcaption style="margin-top: 8px; font-size: 0.875rem; color: #6b7280; font-style: italic; text-align: center;">
+    Figure 6: Work through these questions in order. The first YES determines your pattern.
+  </figcaption>
+</figure>
 
 <hr>
 
 <h2>Trade-off Comparison</h2>
 
-<p>Read this table as a constraint map, not a leaderboard. The pattern with the lowest latency is not the best pattern &mdash; it is the best pattern for tasks where latency is the binding constraint. The reliability scores below are conditional on the design decisions described above. Remove the loop limit from ReAct and its reliability drops to zero. Introduce contradictory criteria to Reflection and it will never converge regardless of how many rounds you permit.</p>
+<p>Read this table as a constraint map, not a leaderboard. The pattern with the lowest latency is not the best pattern&nbsp;&mdash; it is the best pattern for tasks where latency is the binding constraint. The reliability scores below are conditional on the design decisions described above. Remove the loop limit from ReAct and its reliability drops to zero. Introduce contradictory criteria to Reflection and it will never converge regardless of how many rounds you permit.</p>
 
-<div style="overflow-x: auto;">
 <table>
 <thead>
 <tr>
-<th style="background:#4F46E5;color:#fff;padding:0.65rem 0.6rem;text-align:left;font-family:system-ui,sans-serif;font-weight:600;font-size:0.82rem;position:sticky;top:0;">Pattern</th>
-<th style="background:#4F46E5;color:#fff;padding:0.65rem 0.6rem;text-align:left;font-family:system-ui,sans-serif;font-weight:600;font-size:0.82rem;position:sticky;top:0;">Latency</th>
-<th style="background:#4F46E5;color:#fff;padding:0.65rem 0.6rem;text-align:left;font-family:system-ui,sans-serif;font-weight:600;font-size:0.82rem;position:sticky;top:0;">Cost</th>
-<th style="background:#4F46E5;color:#fff;padding:0.65rem 0.6rem;text-align:left;font-family:system-ui,sans-serif;font-weight:600;font-size:0.82rem;position:sticky;top:0;">Reliability</th>
-<th style="background:#4F46E5;color:#fff;padding:0.65rem 0.6rem;text-align:left;font-family:system-ui,sans-serif;font-weight:600;font-size:0.82rem;position:sticky;top:0;">Complexity</th>
-<th style="background:#4F46E5;color:#fff;padding:0.65rem 0.6rem;text-align:left;font-family:system-ui,sans-serif;font-weight:600;font-size:0.82rem;position:sticky;top:0;">Best For</th>
-<th style="background:#4F46E5;color:#fff;padding:0.65rem 0.6rem;text-align:left;font-family:system-ui,sans-serif;font-weight:600;font-size:0.82rem;position:sticky;top:0;">Signature Failure Mode</th>
+<th>Pattern</th>
+<th>Latency</th>
+<th>Cost</th>
+<th>Reliability</th>
+<th>Complexity</th>
+<th>Best For</th>
+<th>Signature Failure</th>
 </tr>
 </thead>
 <tbody>
-<tr style="background:#f9fafb;">
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">ReAct</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Medium</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Medium</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">High (with loop limit)</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Low</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Adaptive multi-step retrieval</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Infinite reasoning loop</td>
+<tr>
+<td>ReAct</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>High (with loop limit)</td>
+<td>Low</td>
+<td>Adaptive multi-step retrieval</td>
+<td>Infinite reasoning loop</td>
 </tr>
-<tr style="background:#fff;">
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Plan-and-Execute</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">High (plan) / Low (exec)</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Medium</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Medium</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Medium</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Sequential ordered pipelines</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Stale plan from world-state change</td>
+<tr>
+<td>Plan-and-Execute</td>
+<td>High (plan) / Low (exec)</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Sequential ordered pipelines</td>
+<td>Stale plan from world-state change</td>
 </tr>
-<tr style="background:#f9fafb;">
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Reflection</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">High</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">High</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">High (with coherent criteria)</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Medium</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Quality-critical single outputs</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Non-converging oscillation</td>
+<tr>
+<td>Reflection</td>
+<td>High</td>
+<td>High</td>
+<td>High (with coherent criteria)</td>
+<td>Medium</td>
+<td>Quality-critical single outputs</td>
+<td>Non-converging oscillation</td>
 </tr>
-<tr style="background:#fff;">
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Multi-Agent</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Very High</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Very High</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Medium</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">High</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Cross-domain collaboration</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Coordination deadlock</td>
+<tr>
+<td>Multi-Agent</td>
+<td>Very High</td>
+<td>Very High</td>
+<td>Medium</td>
+<td>High</td>
+<td>Cross-domain collaboration</td>
+<td>Coordination deadlock</td>
 </tr>
-<tr style="background:#f9fafb;">
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Memory-Augmented</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Low (after retrieval)</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Low</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Medium</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Medium&ndash;High</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Cross-session personalization</td>
-<td style="padding:0.55rem 0.6rem;border-bottom:1px solid #e5e7eb;">Context poisoning</td>
+<tr>
+<td>Memory-Augmented</td>
+<td>Low (after retrieval)</td>
+<td>Low</td>
+<td>Medium</td>
+<td>Medium&ndash;High</td>
+<td>Cross-session personalization</td>
+<td>Context poisoning</td>
 </tr>
 </tbody>
 </table>
-</div>
 
 <hr>
 
@@ -604,13 +753,24 @@ If the agent must remember preferences, history, or accumulated knowledge across
 
 <p>There is a seductive narrative about large language models that goes roughly as follows: as models become more capable, architectural constraints become less necessary. Smarter models make better decisions. Better decisions mean fewer guardrails required. This narrative is wrong, and the failure modes documented in this chapter explain precisely why.</p>
 
-<p>A smarter model in a ReAct loop without a loop limit is a model that reasons more fluently toward no conclusion. A smarter model in a Plan-and-Execute pipeline with an immutable plan is a model that executes stale assumptions with greater confidence. A smarter model in a Reflection loop with contradictory criteria oscillates more articulately. A smarter model reading a poisoned memory produces a more convincing wrong answer. Model capability and architectural soundness are orthogonal properties. Improving one does not compensate for deficiencies in the other.</p>
+<p>A smarter model in a ReAct loop without a loop limit is a model that reasons more fluently toward no conclusion. A smarter model in a Plan-and-Execute pipeline with an immutable plan is a model that executes stale assumptions with greater confidence. A smarter model in a Reflection loop with contradictory criteria oscillates more articulately. A smarter model reading a poisoned memory produces a more convincing wrong answer. Model capability and architectural soundness operate on independent axes. The failure modes documented in this chapter are not capability failures&nbsp;&mdash; they are structural gaps that a more capable model will navigate more fluently toward the same wrong outcome. Improving the model does not close an architectural gap. It makes the gap harder to see.</p>
 
-<p>The patterns in this chapter are not workarounds for weak models. They are the structural expression of what a reliable agent is allowed to do. The loop limit is not a crutch for a model that cannot decide when to stop &mdash; it is the system's formal commitment to bounded execution. The plan validation step is not a check on the planner's intelligence &mdash; it is the architecture's assertion that internal consistency is a property of the plan, not of the model that generated it. The memory validation layer is not distrust of the retrieval system &mdash; it is the acknowledgment that a persistent store that can be written to can also be corrupted, and that this possibility must be structurally managed.</p>
+<p>The patterns in this chapter are not workarounds for weak models. They are the structural expression of what a reliable agent is allowed to do. The loop limit is not a crutch for a model that cannot decide when to stop&nbsp;&mdash; it is the system's formal commitment to bounded execution. The plan validation step is not a check on the planner's intelligence&nbsp;&mdash; it is the architecture's assertion that internal consistency is a property of the plan, not of the model that generated it. The memory validation layer is not distrust of the retrieval system&nbsp;&mdash; it is the acknowledgment that a persistent store that can be written to can also be corrupted, and that this possibility must be structurally managed.</p>
 
 <p>When an agent fails, the forensic question is always the same: what did the architecture permit that it should not have? The answer to that question is the fix. Not a better model. A better constraint.</p>
 
-<p>The architecture is not the thing that runs the model. It is the thing that decides what the model is allowed to do.</p>
+<p>The architecture is not the thing that runs the model. It is the thing that decides what the model is allowed to do. Chapter 5 extends this logic to the failure modes that emerge not from a single pattern applied incorrectly, but from patterns composed together&nbsp;&mdash; where the constraints of one architectural layer interact with, and sometimes undermine, the constraints of another.</p>
+
+<figure style="margin: 32px 0; text-align: center;">
+  <img 
+    src="../assets/diagrams/Fig 7.png" 
+    alt="Figure 7: Model capability vs architectural soundness orthogonality quadrant"
+    style="width: 100%; border-radius: 6px; border: 1px solid #e5e7eb;"
+  />
+  <figcaption style="margin-top: 8px; font-size: 0.875rem; color: #6b7280; font-style: italic; text-align: center;">
+    Figure 7: Improving the model does not close an architectural gap — it makes the gap harder to see.
+  </figcaption>
+</figure>
 
 <hr>
 
@@ -632,5 +792,6 @@ If the agent must remember preferences, history, or accumulated knowledge across
 <p>7. Wang, L., Ma, C., Feng, X., Zhang, Z., Yang, H., Zhang, J., Chen, Z., Tang, J., Chen, X., Lin, Y., Zhao, W. X., Wei, Z., &amp; Wen, J.-R. (2024). <em>A Survey on Large Language Model based Autonomous Agents.</em> Frontiers of Computer Science, 18(6).</p>
 </div>
 
+</div>
 </body>
 </html>
