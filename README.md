@@ -93,7 +93,7 @@ jupyter notebook notebook/chapter04_demo.ipynb
 
 ## Notebook Contents
 
-The notebook has 30 cells organized into five pattern sections plus setup and analytics.
+The notebook has 43 cells organized into five pattern sections plus setup and analytics.
 
 | Cell | Type | Content |
 |------|------|---------|
