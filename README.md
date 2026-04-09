@@ -66,7 +66,7 @@ Every LLM call is logged with latency and token count. Every failure is recorded
 
 ```bash
 # 1. Clone the repository
-git clone <repo-url> && cd Five-Patterns
+git clone https://github.com/raghuneu/Five-Patterns.git && cd Five-Patterns
 
 # 2. Create environment file
 cp .env.example .env
@@ -93,7 +93,7 @@ jupyter notebook notebook/chapter04_demo.ipynb
 
 ## Notebook Contents
 
-The notebook has 43 cells organized into five pattern sections plus setup and analytics.
+The notebook has 30 cells organized into five pattern sections plus setup and analytics.
 
 | Cell | Type | Content |
 |------|------|---------|
@@ -206,6 +206,16 @@ Five-Patterns/
 | Fig 5 | assets/diagrams/Fig 5.png | Pattern 5: Memory |
 | Fig 6 | assets/diagrams/Fig 6.png | Pattern Selection |
 | Fig 7 | assets/diagrams/Fig 7.png | Closing |
+
+---
+
+## Video Walkthrough
+
+**Show-and-Tell (10 min) — Explain → Show → Try**
+
+> Link: <!-- TODO: paste YouTube/Vimeo URL here -->
+
+Covers all five patterns, five failure demonstrations, and the Multi-Agent Human Decision Node (S13) where the AI's "prompt confusion" framing was rejected in favor of the architectural deadlock diagnosis.
 
 ---
 
