@@ -268,8 +268,9 @@ The `reflection_logger.log_round()` call writes every iteration to `REFLECTION_R
 
 The oscillation is the diagnostic signature of contradictory criteria. If you observe a reflection system's scores across rounds and see alternating highs and lows rather than monotonic improvement, you are watching contradictory criteria in operation. The fix is not more rounds. The fix is criteria revision.
 
-![Fig 3: Reflection convergence vs oscillation](../assets/diagrams/Fig 3 Convergence.png)
-*Figure 3: Oscillating scores are the diagnostic signature of contradictory criteria. The fix is always criteria revision — never model upgrade.*
+![Fig 3a: Reflection convergence with coherent criteria](../assets/diagrams/Fig 3 Convergence.png)
+![Fig 3b: Reflection oscillation with contradictory criteria](../assets/diagrams/Fig 3 Oscillation.png)
+*Figure 3: Convergence (top) vs. oscillation (bottom). Oscillating scores are the diagnostic signature of contradictory criteria. The fix is always criteria revision — never model upgrade.*
 
 ### The Exercise
 

@@ -51,7 +51,7 @@ flowchart LR
 > **Left panel:** The token loop has no intrinsic exit — it runs until an external timeout or cost limit intervenes.  
 > **Right panel:** An **External Gate** sits outside the model, evaluating `done_signal` or `max_steps`. Termination is an architectural property, not a model property.
 
-*Figure 0. Token generation has no intrinsic termination condition (left). The loop limit and done signal are architectural gates that sit outside the model (right).*
+_Figure 0. Token generation has no intrinsic termination condition (left). The loop limit and done signal are architectural gates that sit outside the model (right)._
 
 ---
 
@@ -92,7 +92,7 @@ flowchart TB
     linkStyle 5 stroke:#DC2626,stroke-width:2px,stroke-dasharray:6 3
 ```
 
-*Figure 1. Two exit conditions bound the ReAct loop. Removing either — especially max_steps — eliminates the architecture's only termination constraint.*
+_Figure 1. Two exit conditions bound the ReAct loop. Removing either — especially max_steps — eliminates the architecture's only termination constraint._
 
 ---
 
@@ -121,7 +121,7 @@ flowchart LR
     linkStyle 4 stroke:#DC2626,stroke-width:2px,stroke-dasharray:6 3
 ```
 
-*Figure 2. The planner commits to Schema v1 at T=0. When the world changes at T=2, the executor has no mechanism to detect the divergence. The output looks correct. It is wrong.*
+_Figure 2. The planner commits to Schema v1 at T=0. When the world changes at T=2, the executor has no mechanism to detect the divergence. The output looks correct. It is wrong._
 
 ---
 
@@ -171,7 +171,7 @@ flowchart TB
     classDef lightgray fill:#F3F4F6,stroke:#9CA3AF,color:#374151,stroke-width:1px
 ```
 
-*Figure 2A. Separation means each component sees only what it needs. This prevents goal drift but creates the stale plan vulnerability — the executor cannot detect when its task assumptions are invalidated.*
+_Figure 2A. Separation means each component sees only what it needs. This prevents goal drift but creates the stale plan vulnerability — the executor cannot detect when its task assumptions are invalidated._
 
 ---
 
@@ -183,10 +183,10 @@ flowchart TB
 ```mermaid
 ---
 config:
-  theme: base
-  themeVariables:
-    primaryColor: "#3730A3"
-    lineColor: "#475569"
+theme: base
+themeVariables:
+    xyChart:
+    plotColorPalette: "#2563EB, #DC2626"
 ---
 xychart-beta
     title "Coherent criteria — convergence"
@@ -199,10 +199,10 @@ xychart-beta
 ```mermaid
 ---
 config:
-  theme: base
-  themeVariables:
-    primaryColor: "#DC2626"
-    lineColor: "#DC2626"
+theme: base
+themeVariables:
+    xyChart:
+    plotColorPalette: "#DC2626, #9CA3AF"
 ---
 xychart-beta
     title "Contradictory criteria — oscillation"
@@ -215,7 +215,7 @@ xychart-beta
 > **Left chart (Coherent criteria):** Blue score line rises monotonically from ~0.52 to ~0.91, crossing the 0.85 threshold at round 5. ✅ **Converged.**  
 > **Right chart (Contradictory criteria):** Red score line alternates between ~0.60 and ~0.80 for all 8 rounds, never crossing threshold. ❌ **Never converges.**
 
-*Figure 3. Oscillating scores are the diagnostic signature of contradictory criteria. The fix is always criteria revision — never model upgrade.*
+_Figure 3. Oscillating scores are the diagnostic signature of contradictory criteria. The fix is always criteria revision — never model upgrade._
 
 ---
 
@@ -243,12 +243,12 @@ quadrantChart
     quadrant-4 "Oscillates fluently (DANGER)"
 ```
 
-> | | **Weak Model** | **Strong Model** |
-> |---|---|---|
-> | **Clear Criteria** | ✅ Converges — criteria coherence compensates for model weakness | ✅ Converges faster — both factors aligned (ideal) |
-> | **Contradictory Criteria** | ❌ Oscillates — both factors misaligned | ⚠️ **Oscillates fluently** — DANGER: failure is harder to detect |
+> |                            | **Weak Model**                                                   | **Strong Model**                                                 |
+> | -------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
+> | **Clear Criteria**         | ✅ Converges — criteria coherence compensates for model weakness | ✅ Converges faster — both factors aligned (ideal)               |
+> | **Contradictory Criteria** | ❌ Oscillates — both factors misaligned                          | ⚠️ **Oscillates fluently** — DANGER: failure is harder to detect |
 
-*Figure 3A. Criteria quality is the actionable determinant. A stronger model with contradictory criteria oscillates more articulately — making the failure harder to detect, not easier to fix.*
+_Figure 3A. Criteria quality is the actionable determinant. A stronger model with contradictory criteria oscillates more articulately — making the failure harder to detect, not easier to fix._
 
 ---
 
@@ -295,12 +295,13 @@ flowchart TB
 ```
 
 > **Legend:**
+>
 > - 🟦 Indigo = Orchestrator
 > - 🟩 Teal = Specialist agents
 > - ➡️ Blue arrows = Normal message flow
 > - 🔴 Red dashed arrows = Deadlock circular-wait
 
-*Figure 4. Deadlock is topological — it emerges from the handoff protocol, not from any individual agent's failure. Both agents are functioning correctly. Neither will proceed.*
+_Figure 4. Deadlock is topological — it emerges from the handoff protocol, not from any individual agent's failure. Both agents are functioning correctly. Neither will proceed._
 
 ---
 
@@ -348,7 +349,7 @@ sequenceDiagram
     Note right of ORCH: ⛔ DOES NOT EXECUTE —<br/>tool calls never enter<br/>Orchestrator lane
 ```
 
-*Figure 4A. The Orchestrator routes and assembles. It never calls a tool directly. Execution is always inside the specialist's swim lane.*
+_Figure 4A. The Orchestrator routes and assembles. It never calls a tool directly. Execution is always inside the specialist's swim lane._
 
 ---
 
@@ -398,7 +399,7 @@ flowchart TB
 
 > **Poisoning path:** A poisoned record in the long-term store is indistinguishable from a valid record at retrieval time. The Validation Check sits on the **write** path — it cannot intercept a record already in the store.
 
-*Figure 5. The retrieval layer trusts all stored memories equally. A poisoned record is indistinguishable from a valid one. The validation gate sits on the write path — it cannot intercept a record already in the store.*
+_Figure 5. The retrieval layer trusts all stored memories equally. A poisoned record is indistinguishable from a valid one. The validation gate sits on the write path — it cannot intercept a record already in the store._
 
 ---
 
@@ -453,7 +454,7 @@ flowchart TB
     linkStyle 9 stroke:#16A34A,stroke-width:2px
 ```
 
-*Figure 6. Work through these questions in order. The first YES determines your pattern. If no YES is reached, the simplest pattern is the right choice.*
+_Figure 6. Work through these questions in order. The first YES determines your pattern. If no YES is reached, the simplest pattern is the right choice._
 
 ---
 
@@ -466,10 +467,10 @@ flowchart TB
 ---
 config:
   quadrantChart:
-    chartWidth: 600
-    chartHeight: 600
+    chartWidth: 700
+    chartHeight: 700
     quadrantLabelFontSize: 14
-    pointLabelFontSize: 12
+    pointLabelFontSize: 11
     pointRadius: 6
 ---
 quadrantChart
@@ -480,19 +481,24 @@ quadrantChart
     quadrant-2 "Constrained and safe"
     quadrant-3 "Breaks quietly"
     quadrant-4 "BREAKS CONVINCINGLY"
-    "ReAct no loop limit": [0.75, 0.20]
-    "Reflection bad criteria": [0.80, 0.25]
-    "Memory no validation": [0.70, 0.15]
+    "ReAct infinite loop": [0.60, 0.35]
+    "Plan-Execute stale plan": [0.72, 0.12]
+    "Reflection bad criteria": [0.90, 0.28]
+    "Multi-Agent deadlock": [0.85, 0.08]
+    "Memory poisoning": [0.65, 0.18]
 ```
 
-> **Bottom-right quadrant (DANGER ZONE)** contains all three example failure points:
+> **Bottom-right quadrant (DANGER ZONE)** contains all five example failure points:
+>
 > - ReAct without loop limit
+> - Plan-and-Execute with stale plan after world-state change
 > - Reflection with contradictory criteria
+> - Multi-Agent circular-wait deadlock
 > - Memory without validation layer
 >
 > **Key insight:** Higher capability → more articulate failure → harder to detect.
 
-*Figure 7. Model capability and architectural soundness operate on independent axes. Improving the model does not close an architectural gap — it makes the gap harder to see. The failure modes in this chapter all live in the bottom-right quadrant.*
+_Figure 7. Model capability and architectural soundness operate on independent axes. Improving the model does not close an architectural gap — it makes the gap harder to see. All five failure modes in this chapter live in the bottom-right quadrant._
 
 ---
 
