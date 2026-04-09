@@ -216,6 +216,10 @@
   <p><strong>5 &mdash; Memory-Augmented</strong> <em>(Evaluate, L5)</em><br>
   <strong>Evaluate</strong> two competing memory validation gate designs for a given agent task, and justify which design provides stronger protection against context poisoning using explicit, evidence-based criteria.</p>
 
+  <blockquote>
+    <p><strong>Reader&rsquo;s note:</strong> The <strong>Pattern Selection Framework</strong> &mdash; a five-question decision tree and trade-off table &mdash; is at the end of this chapter. If you are reading as a reference and already know your use case, jump there directly. If this is your first pass: work through the patterns in order &mdash; the decision tree assumes you can name each pattern&rsquo;s failure mode before asking you to choose between them.</p>
+  </blockquote>
+
   <hr>
 
   <h2>The Illusion of the Smart Agent</h2>
@@ -238,8 +242,6 @@
   <p>This chapter is about five architectural patterns that prevent five specific failure modes. Each pattern is not a recipe for making agents smarter. Each pattern is a <em>constraint</em> &mdash; a structural limitation on what the agent is allowed to do. Constraints are what make agents reliable. An agent without constraints is not powerful; it is uncontrollable. The five patterns we will examine are five different answers to the same question: <em>what structural boundary prevents the specific failure that would otherwise occur?</em></p>
 
   <p>For each pattern, we will build the working version, then deliberately break it. Because if you cannot produce the failure, you do not understand the architecture.</p>
-
-  <p><em>(If you already know which pattern applies to your task and want to skip ahead, the Pattern Selection Framework at the end of this chapter provides a diagnostic decision tree. If you are reading this chapter for the first time, work through the patterns in order &mdash; the decision tree is only useful once you understand what each constraint actually does.)</em></p>
 
   <hr>
 
@@ -653,7 +655,7 @@ def respond(user_input):
 
   <p>There is a seductive narrative about large language models that goes roughly as follows: as models become more capable, architectural constraints become less necessary. Smarter models make better decisions. Better decisions mean fewer guardrails required. This narrative is wrong, and the failure modes documented in this chapter explain precisely why.</p>
 
-  <p>A smarter model in a ReAct loop without a loop limit is a model that reasons more fluently toward no conclusion. A smarter model in a Plan-and-Execute pipeline with an immutable plan is a model that executes stale assumptions with greater confidence. A smarter model in a Reflection loop with contradictory criteria oscillates more articulately. A smarter model reading a poisoned memory produces a more convincing wrong answer. Model capability and architectural soundness operate on independent axes. The failure modes documented in this chapter are not capability failures &mdash; they are structural gaps that a more capable model will navigate more fluently toward the same wrong outcome. Improving the model does not close an architectural gap. It makes the gap harder to see.</p>
+  <p>A smarter model in a ReAct loop without a loop limit is a model that reasons more fluently toward no conclusion. A smarter model in a Plan-and-Execute pipeline with an immutable plan is a model that executes stale assumptions with greater confidence. A smarter model in a Reflection loop with contradictory criteria oscillates more articulately. A smarter model reading a poisoned memory produces a more convincing wrong answer. Model capability and architectural soundness operate on independent axes. The five demonstrations in this chapter are the evidence: each failure was triggered against Snowflake Cortex &mdash; a production-grade LLM endpoint &mdash; without modifying the model version. The architecture changed; the failure followed from the architecture. The failure modes documented in this chapter are not capability failures &mdash; they are structural gaps that a more capable model will navigate more fluently toward the same wrong outcome. Improving the model does not close an architectural gap. It makes the gap harder to see.</p>
 
   <p>The patterns in this chapter are not workarounds for weak models. They are the structural expression of what a reliable agent is allowed to do. The loop limit is not a crutch for a model that cannot decide when to stop &mdash; it is the system&rsquo;s formal commitment to bounded execution. The plan validation step is not a check on the planner&rsquo;s intelligence &mdash; it is the architecture&rsquo;s assertion that internal consistency is a property of the plan, not of the model that generated it. The memory validation layer is not distrust of the retrieval system &mdash; it is the acknowledgment that a persistent store that can be written to can also be corrupted, and that this possibility must be structurally managed.</p>
 
