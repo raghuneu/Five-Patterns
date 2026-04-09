@@ -8,6 +8,25 @@
 
 ---
 
+## Learning Objectives
+
+**1 — ReAct** _(Remember, L1)_
+**Recall** the role of the loop limit as a termination constraint in ReAct agents, including the specific failure condition that results when the limit is absent or misconfigured.
+
+**2 — Plan-and-Execute** _(Understand, L2)_
+**Explain** why planner/executor separation introduces the risk of a stale plan when world state changes mid-execution, and what design assumptions make this failure predictable.
+
+**3 — Reflection** _(Apply, L3)_
+**Construct** a minimal reflection loop in Python that demonstrates oscillation behavior by deliberately supplying contradictory evaluation criteria, then identify the criteria change that resolves it.
+
+**4 — Multi-Agent** _(Analyze, L4)_
+**Diagnose** a coordination deadlock in a provided multi-agent system by tracing the handoff protocol to the specific design decision that produced circular dependency between agents.
+
+**5 — Memory-Augmented** _(Evaluate, L5)_
+**Evaluate** two competing memory validation gate designs for a given agent task, and justify which design provides stronger protection against context poisoning using explicit, evidence-based criteria.
+
+---
+
 ## The Illusion of the Smart Agent
 
 The system worked. That is the important thing to understand first. In the developer's test environment, the agent did exactly what it was supposed to do: it browsed three sources, synthesized a research brief, responded to a round of feedback, and submitted a clean final document. The loop ran four times. It terminated. The output was good.
@@ -26,6 +45,8 @@ This is the central confusion that produces the majority of agentic system failu
 This chapter is about five architectural patterns that prevent five specific failure modes. Each pattern is not a recipe for making agents smarter. Each pattern is a _constraint_ — a structural limitation on what the agent is allowed to do. Constraints are what make agents reliable. An agent without constraints is not powerful; it is uncontrollable. The five patterns we will examine are five different answers to the same question: _what structural boundary prevents the specific failure that would otherwise occur?_
 
 For each pattern, we will build the working version, then deliberately break it. Because if you cannot produce the failure, you do not understand the architecture.
+
+_(If you already know which pattern applies to your task and want to skip ahead, the Pattern Selection Framework at the end of this chapter provides a diagnostic decision tree. If you are reading this chapter for the first time, work through the patterns in order — the decision tree is only useful once you understand what each constraint actually does.)_
 
 ---
 
@@ -421,13 +442,20 @@ If the agent must remember preferences, history, or accumulated knowledge across
 
 Read this table as a constraint map, not a leaderboard. The pattern with the lowest latency is not the best pattern — it is the best pattern for tasks where latency is the binding constraint. The reliability scores below are conditional on the design decisions described above. Remove the loop limit from ReAct and its reliability drops to zero. Introduce contradictory criteria to Reflection and it will never converge regardless of how many rounds you permit.
 
-| Pattern          | Latency                  | Cost      | Reliability                   | Complexity  | Best For                        | Signature Failure Mode             |
-| ---------------- | ------------------------ | --------- | ----------------------------- | ----------- | ------------------------------- | ---------------------------------- |
-| ReAct            | Medium                   | Medium    | High (with loop limit)        | Low         | Adaptive multi-step retrieval   | Infinite reasoning loop            |
-| Plan-and-Execute | High (plan) / Low (exec) | Medium    | Medium                        | Medium      | Sequential ordered pipelines    | Stale plan from world-state change |
-| Reflection       | High                     | High      | High (with coherent criteria) | Medium      | Quality-critical single outputs | Non-converging oscillation         |
-| Multi-Agent      | Very High                | Very High | Medium                        | High        | Cross-domain collaboration      | Coordination deadlock              |
-| Memory-Augmented | Low (after retrieval)    | Low       | Medium                        | Medium–High | Cross-session personalization   | Context poisoning                  |
+**ReAct** — **Latency:** Medium · **Cost:** Medium · **Reliability:** High _(with loop limit)_ · **Complexity:** Low
+**Best for:** Adaptive multi-step retrieval — **Failure:** Infinite reasoning loop
+
+**Plan-and-Execute** — **Latency:** High (plan) / Low (exec) · **Cost:** Medium · **Reliability:** Medium · **Complexity:** Medium
+**Best for:** Sequential ordered pipelines — **Failure:** Stale plan from world-state change
+
+**Reflection** — **Latency:** High · **Cost:** High · **Reliability:** High _(with coherent criteria)_ · **Complexity:** Medium
+**Best for:** Quality-critical single outputs — **Failure:** Non-converging oscillation
+
+**Multi-Agent** — **Latency:** Very High · **Cost:** Very High · **Reliability:** Medium · **Complexity:** High
+**Best for:** Cross-domain collaboration — **Failure:** Coordination deadlock
+
+**Memory-Augmented** — **Latency:** Low (after retrieval) · **Cost:** Low · **Reliability:** Medium · **Complexity:** Medium–High
+**Best for:** Cross-session personalization — **Failure:** Context poisoning
 
 ---
 
