@@ -93,40 +93,32 @@ jupyter notebook notebook/chapter04_demo.ipynb
 
 ## Notebook Contents
 
-The notebook has 30 cells organized into five pattern sections plus setup and analytics.
+The notebook has 43 cells organized into five pattern sections plus setup and analytics. Each pattern block includes markdown introductions, figure cells, working code, a Human Decision Node (markdown + code), failure code, and analysis.
 
-| Cell | Type | Content |
-|------|------|---------|
-| 0 | Markdown | Title, core claim, notebook overview |
-| 1 | Code | `pip install` dependencies |
-| 2 | Code | Imports and infrastructure initialization |
-| 3 | Code | Run `setup.sql` and verify Cortex connection |
-| **4** | **Markdown** | **Pattern 1: ReAct** -- introduction and failure mode description |
-| 5 | Code | Tool registry: `search`, `calculator`, `summarize`, `done` |
-| 6 | Code | Working ReAct agent (`max_steps=5`, `done` tool enabled) |
-| **7** | **Markdown** | **Human Decision Node -- Pattern 1** |
-| 8 | Code | FAILURE: ReAct infinite loop (no `done` tool, no `max_steps`) |
-| 9 | Code | LLM call log analysis for ReAct |
-| **10** | **Markdown** | **Pattern 2: Plan-and-Execute** -- introduction and failure mode description |
-| 11 | Code | Working Plan-and-Execute agent (4-step plan with world state) |
-| **12** | **Markdown** | **Human Decision Node -- Pattern 2** |
-| 13 | Code | FAILURE: Stale plan (world state change injected at step 3) |
-| **14** | **Markdown** | **Pattern 3: Reflection** -- introduction and failure mode description |
-| 15 | Code | Working Reflection agent (coherent criteria, `threshold=7.5`) |
-| **16** | **Markdown** | **Human Decision Node -- Pattern 3** |
-| 17 | Code | FAILURE: Non-converging reflection (contradictory criteria) + plot |
-| **18** | **Markdown** | **Pattern 4: Multi-Agent** -- introduction and failure mode description |
-| 19 | Code | Working Multi-Agent system (Researcher -> Writer -> Reviewer) |
-| **20** | **Markdown** | **Human Decision Node -- Pattern 4** |
-| 21 | Code | FAILURE: Circular-wait deadlock between Writer and Reviewer |
-| **22** | **Markdown** | **Pattern 5: Memory-Augmented** -- introduction and failure mode description |
-| 23 | Code | Working Memory-Augmented agent (keyword retrieval from `AGENT_MEMORY`) |
-| **24** | **Markdown** | **Human Decision Node -- Pattern 5** |
-| 25 | Code | FAILURE: Context poisoning (corrupted memory retrieved as ground truth) |
-| 26 | Code | Pattern Recommender -- cross-pattern evaluation |
-| 27 | Code | Full demo analytics from Snowflake (call log, evaluations) |
-| **28** | **Markdown** | **Closing** -- summary and architectural lessons |
-| 29 | Code | Cleanup (optional teardown) |
+| Cells | Section | Key Content |
+|-------|---------|-------------|
+| 0--1 | Title & Overview | Core claim, notebook structure, hero figure |
+| 2--4 | Setup | `pip install`, imports, `setup.sql` execution |
+| 5--8 | Pattern 1: ReAct | Introduction, figures, tool registry |
+| 9 | | Working ReAct agent (`max_steps=5`, `done` tool) |
+| **10--11** | | **Human Decision Node** (markdown + code) -- FAILURE: infinite loop |
+| 12 | | LLM call log analysis for ReAct |
+| 13--15 | Pattern 2: Plan-and-Execute | Introduction, figures, working agent |
+| **16--17** | | **Human Decision Node** (markdown + code) -- FAILURE: stale plan |
+| 18--19 | | Failure analysis figures |
+| 20--21 | Pattern 3: Reflection | Introduction, figures, working agent |
+| **22--23** | | **Human Decision Node** (markdown + code) -- FAILURE: oscillation |
+| 24--26 | Pattern 4: Multi-Agent | Introduction, figures |
+| 27 | | Working multi-agent system (Researcher -> Writer -> Reviewer) |
+| 28 | | Failure mode figure |
+| **29--30** | | **Human Decision Node** (markdown + code) -- FAILURE: deadlock |
+| 31--32 | Pattern 5: Memory-Augmented | Introduction, figures |
+| 33 | | Working memory agent (keyword retrieval from `AGENT_MEMORY`) |
+| 34 | | Failure mode figure |
+| **35--36** | | **Human Decision Node** (markdown + code) -- FAILURE: context poisoning |
+| 37--38 | Analytics | Pattern recommender, full demo analytics |
+| 39--41 | Closing | Summary, architectural lessons, figures |
+| 42 | Cleanup | Optional teardown |
 
 ---
 
@@ -136,17 +128,17 @@ Each pattern has a dedicated failure cell. The failure is architectural, not par
 
 | Pattern | Cell | Trigger | Expected Output |
 |---------|------|---------|-----------------|
-| **ReAct** | 8 | `done` tool removed from registry; no `max_steps` guard | Agent loops 8 iterations (safety limit), never converges. Raises `LoopLimitError`. |
-| **Plan-and-Execute** | 13 | `inject_world_state_change(3)` called between steps 2 and 3 | Steps 3-4 execute against stale schema (v2 vs. v3). Output is structurally valid, semantically wrong. No exception raised. |
-| **Reflection** | 17 | `criteria=["extreme_conciseness", "comprehensive_detail"]`, `threshold=9.0` | Score oscillates between rounds, never crosses threshold. Matplotlib plot shows non-convergence. |
-| **Multi-Agent** | 21 | `bus.create_deadlock("writer", "reviewer")` marks pending messages as `'deadlocked'` | Both agents timeout waiting for each other. Raises `DeadlockError`. |
-| **Memory-Augmented** | 25 | `mem.poison_memory(memory_id, false_content)` overwrites a valid memory with `is_poisoned=TRUE` | Agent retrieves poisoned record identically to valid ones. Produces fluent, confident, wrong answer. |
+| **ReAct** | 11 | `done` tool removed from registry; no `max_steps` guard | Agent loops 8 iterations (safety limit), never converges. Raises `LoopLimitError`. |
+| **Plan-and-Execute** | 17 | `inject_world_state_change(3)` called between steps 2 and 3 | Steps 3-4 execute against stale schema (v2 vs. v3). Output is structurally valid, semantically wrong. No exception raised. |
+| **Reflection** | 23 | `criteria=["extreme_conciseness", "comprehensive_detail"]`, `threshold=9.0` | Score oscillates between rounds, never crosses threshold. Matplotlib plot shows non-convergence. |
+| **Multi-Agent** | 30 | `bus.create_deadlock("writer", "reviewer")` marks pending messages as `'deadlocked'` | Both agents timeout waiting for each other. Raises `DeadlockError`. |
+| **Memory-Augmented** | 36 | `mem.poison_memory(memory_id, false_content)` overwrites a valid memory with `is_poisoned=TRUE` | Agent retrieves poisoned record identically to valid ones. Produces fluent, confident, wrong answer. |
 
 ---
 
 ## The Human Decision Node
 
-Each pattern section includes a mandatory human decision node (cells 7, 12, 16, 20, 24). The format is identical across all five:
+Each pattern section includes a mandatory human decision node (cells 10--11, 16--17, 22--23, 29--30, 35--36). Each HDN spans a markdown cell (architectural assumptions and verification checklist) followed by a code cell (failure demonstration with pre-run confirmation). The format is identical across all five:
 
 > **BEFORE PROCEEDING -- Verify for your use case:**
 > - [ ] *[Pattern-specific architectural assumption 1]*
@@ -213,7 +205,7 @@ Five-Patterns/
 
 **Show-and-Tell (10 min) — Explain → Show → Try**
 
-> Link: <!-- TODO: paste YouTube/Vimeo URL here -->
+> Link: https://youtu.be/1CbxP8GUIPk
 
 Covers all five patterns, five failure demonstrations, and the Multi-Agent Human Decision Node (S13) where the AI's "prompt confusion" framing was rejected in favor of the architectural deadlock diagnosis.
 
