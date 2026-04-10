@@ -93,7 +93,7 @@ jupyter notebook notebook/chapter04_demo.ipynb
 
 ## Notebook Contents
 
-The notebook has 45 cells organized into an AI Scaffold, five pattern sections, plus setup and analytics. Each pattern block includes markdown introductions, figure cells, working code, a Human Decision Node (markdown + code), failure code, and analysis.
+The notebook has 47 cells organized into an AI Scaffold, five pattern sections, an orthogonality test, plus setup and analytics. Each pattern block includes markdown introductions, figure cells, working code, a Human Decision Node (markdown + code), failure code, and analysis.
 
 | Cells | Section | Key Content |
 |-------|---------|-------------|
@@ -118,8 +118,9 @@ The notebook has 45 cells organized into an AI Scaffold, five pattern sections, 
 | 36 | | Failure mode figure |
 | **37--38** | | **Human Decision Node** (markdown + code) -- FAILURE: context poisoning |
 | 39--40 | Analytics | Pattern recommender, full demo analytics |
-| 41--43 | Closing | Summary, architectural lessons, figures |
-| 44 | Cleanup | Optional teardown |
+| **41--42** | **Orthogonality Test** | **Same broken ReAct loop across 3 models -- empirical proof that model capability doesn't fix architectural gaps** |
+| 43--45 | Closing | Summary, architectural lessons, figures |
+| 46 | Cleanup | Optional teardown |
 
 ---
 
@@ -169,7 +170,7 @@ Five-Patterns/
 │   ├── chapter04.html                  # Substack-ready HTML
 │   └── authors_note.md                 # 3-page Author's Note
 ├── notebook/
-│   └── chapter04_demo.ipynb            # Main Jupyter demo (45 cells)
+│   └── chapter04_demo.ipynb            # Main Jupyter demo (47 cells)
 ├── figures/
 │   └── figure_prompts.md               # Figure Architect prompts
 ├── assets/
