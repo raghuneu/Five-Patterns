@@ -93,32 +93,33 @@ jupyter notebook notebook/chapter04_demo.ipynb
 
 ## Notebook Contents
 
-The notebook has 43 cells organized into five pattern sections plus setup and analytics. Each pattern block includes markdown introductions, figure cells, working code, a Human Decision Node (markdown + code), failure code, and analysis.
+The notebook has 45 cells organized into an AI Scaffold, five pattern sections, plus setup and analytics. Each pattern block includes markdown introductions, figure cells, working code, a Human Decision Node (markdown + code), failure code, and analysis.
 
 | Cells | Section | Key Content |
 |-------|---------|-------------|
 | 0--1 | Title & Overview | Core claim, notebook structure, hero figure |
 | 2--4 | Setup | `pip install`, imports, `setup.sql` execution |
-| 5--8 | Pattern 1: ReAct | Introduction, figures, tool registry |
-| 9 | | Working ReAct agent (`max_steps=5`, `done` tool) |
-| **10--11** | | **Human Decision Node** (markdown + code) -- FAILURE: infinite loop |
-| 12 | | LLM call log analysis for ReAct |
-| 13--15 | Pattern 2: Plan-and-Execute | Introduction, figures, working agent |
-| **16--17** | | **Human Decision Node** (markdown + code) -- FAILURE: stale plan |
-| 18--19 | | Failure analysis figures |
-| 20--21 | Pattern 3: Reflection | Introduction, figures, working agent |
-| **22--23** | | **Human Decision Node** (markdown + code) -- FAILURE: oscillation |
-| 24--26 | Pattern 4: Multi-Agent | Introduction, figures |
-| 27 | | Working multi-agent system (Researcher -> Writer -> Reviewer) |
-| 28 | | Failure mode figure |
-| **29--30** | | **Human Decision Node** (markdown + code) -- FAILURE: deadlock |
-| 31--32 | Pattern 5: Memory-Augmented | Introduction, figures |
-| 33 | | Working memory agent (keyword retrieval from `AGENT_MEMORY`) |
-| 34 | | Failure mode figure |
-| **35--36** | | **Human Decision Node** (markdown + code) -- FAILURE: context poisoning |
-| 37--38 | Analytics | Pattern recommender, full demo analytics |
-| 39--41 | Closing | Summary, architectural lessons, figures |
-| 42 | Cleanup | Optional teardown |
+| **5--6** | **AI Scaffold** | **LLM proposes agent roles, tool definitions, and pattern -- halts at HDN for human review** |
+| 7--10 | Pattern 1: ReAct | Introduction, figures, tool registry |
+| 11 | | Working ReAct agent (`max_steps=5`, `done` tool) |
+| **12--13** | | **Human Decision Node** (markdown + code) -- FAILURE: infinite loop |
+| 14 | | LLM call log analysis for ReAct |
+| 15--17 | Pattern 2: Plan-and-Execute | Introduction, figures, working agent |
+| **18--19** | | **Human Decision Node** (markdown + code) -- FAILURE: stale plan |
+| 20--21 | | Failure analysis figures |
+| 22--23 | Pattern 3: Reflection | Introduction, figures, working agent |
+| **24--25** | | **Human Decision Node** (markdown + code) -- FAILURE: oscillation |
+| 26--28 | Pattern 4: Multi-Agent | Introduction, figures |
+| 29 | | Working multi-agent system (Researcher -> Writer -> Reviewer) |
+| 30 | | Failure mode figure |
+| **31--32** | | **Human Decision Node** (markdown + code) -- FAILURE: deadlock |
+| 33--34 | Pattern 5: Memory-Augmented | Introduction, figures |
+| 35 | | Working memory agent (keyword retrieval from `AGENT_MEMORY`) |
+| 36 | | Failure mode figure |
+| **37--38** | | **Human Decision Node** (markdown + code) -- FAILURE: context poisoning |
+| 39--40 | Analytics | Pattern recommender, full demo analytics |
+| 41--43 | Closing | Summary, architectural lessons, figures |
+| 44 | Cleanup | Optional teardown |
 
 ---
 
@@ -128,17 +129,17 @@ Each pattern has a dedicated failure cell. The failure is architectural, not par
 
 | Pattern | Cell | Trigger | Expected Output |
 |---------|------|---------|-----------------|
-| **ReAct** | 11 | `done` tool removed from registry; no `max_steps` guard | Agent loops 8 iterations (safety limit), never converges. Raises `LoopLimitError`. |
-| **Plan-and-Execute** | 17 | `inject_world_state_change(3)` called between steps 2 and 3 | Steps 3-4 execute against stale schema (v2 vs. v3). Output is structurally valid, semantically wrong. No exception raised. |
-| **Reflection** | 23 | `criteria=["extreme_conciseness", "comprehensive_detail"]`, `threshold=9.0` | Score oscillates between rounds, never crosses threshold. Matplotlib plot shows non-convergence. |
-| **Multi-Agent** | 30 | `bus.create_deadlock("writer", "reviewer")` marks pending messages as `'deadlocked'` | Both agents timeout waiting for each other. Raises `DeadlockError`. |
-| **Memory-Augmented** | 36 | `mem.poison_memory(memory_id, false_content)` overwrites a valid memory with `is_poisoned=TRUE` | Agent retrieves poisoned record identically to valid ones. Produces fluent, confident, wrong answer. |
+| **ReAct** | 13 | `done` tool removed from registry; no `max_steps` guard | Agent loops 8 iterations (safety limit), never converges. Raises `LoopLimitError`. |
+| **Plan-and-Execute** | 19 | `inject_world_state_change(3)` called between steps 2 and 3 | Steps 3-4 execute against stale schema (v2 vs. v3). Output is structurally valid, semantically wrong. No exception raised. |
+| **Reflection** | 25 | `criteria=["extreme_conciseness", "comprehensive_detail"]`, `threshold=9.0` | Score oscillates between rounds, never crosses threshold. Matplotlib plot shows non-convergence. |
+| **Multi-Agent** | 32 | `bus.create_deadlock("writer", "reviewer")` marks pending messages as `'deadlocked'` | Both agents timeout waiting for each other. Raises `DeadlockError`. |
+| **Memory-Augmented** | 38 | `mem.poison_memory(memory_id, false_content)` overwrites a valid memory with `is_poisoned=TRUE` | Agent retrieves poisoned record identically to valid ones. Produces fluent, confident, wrong answer. |
 
 ---
 
 ## The Human Decision Node
 
-Each pattern section includes a mandatory human decision node (cells 10--11, 16--17, 22--23, 29--30, 35--36). Each HDN spans a markdown cell (architectural assumptions and verification checklist) followed by a code cell (failure demonstration with pre-run confirmation). The format is identical across all five:
+The notebook opens with an AI Scaffold (cells 5--6) that uses the LLM to propose agent roles, tool definitions, and a recommended pattern before halting at a Human Decision Node for human review. Each pattern section includes a mandatory human decision node (cells 12--13, 18--19, 24--25, 31--32, 37--38). Each HDN spans a markdown cell (architectural assumptions and verification checklist) followed by a code cell (failure demonstration with pre-run confirmation). The format is identical across all five:
 
 > **BEFORE PROCEEDING -- Verify for your use case:**
 > - [ ] *[Pattern-specific architectural assumption 1]*
@@ -168,7 +169,7 @@ Five-Patterns/
 │   ├── chapter04.html                  # Substack-ready HTML
 │   └── authors_note.md                 # 3-page Author's Note
 ├── notebook/
-│   └── chapter04_demo.ipynb            # Main Jupyter demo (30 cells)
+│   └── chapter04_demo.ipynb            # Main Jupyter demo (45 cells)
 ├── figures/
 │   └── figure_prompts.md               # Figure Architect prompts
 ├── assets/

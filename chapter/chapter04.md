@@ -50,6 +50,8 @@ This chapter is about five architectural patterns that prevent five specific fai
 
 For each pattern, we will build the working version, then deliberately break it. Because if you cannot produce the failure, you do not understand the architecture.
 
+> **Before the patterns:** The live notebook begins with an **AI Scaffold** — an LLM-powered cell that takes a task description and proposes agent roles, tool definitions, and a recommended architectural pattern. The scaffold demonstrates what the LLM is good at (enumeration) and where it halts for human judgment (architectural trade-off evaluation). The LLM correctly identifies the roles and tools — but recommends Multi-Agent when simpler patterns may suffice. That gap between enumeration and judgment is the reason the five patterns that follow exist.
+
 ---
 
 ## Pattern 1: ReAct (Reasoning + Acting)

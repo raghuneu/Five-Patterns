@@ -163,6 +163,22 @@ class CortexLLM:
             "Retrieved from memory: User previously preferred concise "
             "bullet-point summaries. Applying that preference now."
         ),
+        "scaffold": (
+            "SYSTEM ANALYSIS\n"
+            "Task: Multi-source research with synthesis and review\n\n"
+            "PROPOSED AGENT ROLES:\n"
+            "1. Researcher — queries external sources, returns structured findings\n"
+            "2. Writer — synthesizes findings into coherent prose\n"
+            "3. Reviewer — evaluates output against quality criteria\n\n"
+            "PROPOSED TOOL DEFINITIONS:\n"
+            "- search(query: str) -> str — web/database lookup\n"
+            "- calculator(expr: str) -> float — arithmetic evaluation\n"
+            "- formatter(text: str, style: str) -> str — output formatting\n\n"
+            "RECOMMENDED PATTERN: Multi-Agent Collaboration\n"
+            "REASONING: Task requires distinct specialization (research vs writing "
+            "vs review). Single-agent ReAct would overload context. "
+            "Plan-and-Execute lacks the feedback loop between writer and reviewer."
+        ),
     }
 
     def __init__(
