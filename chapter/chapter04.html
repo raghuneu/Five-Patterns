@@ -458,8 +458,9 @@
     <p><strong>Non-converging reflection.</strong> The causal chain: the criteria set includes two standards that cannot be simultaneously satisfied &mdash; for example, &ldquo;maximize conciseness&rdquo; and &ldquo;include comprehensive inline documentation&rdquo; &rarr; no output can satisfy both criteria simultaneously &rarr; the Generator produces output that satisfies one criterion &rarr; the Critic penalizes it for failing the other &rarr; the Generator revises to satisfy the second criterion &rarr; the Critic penalizes it for failing the first &rarr; the score oscillates between two values, neither of which crosses the threshold &rarr; the loop exhausts its round limit &rarr; the final output is whichever version happened to be produced last.</p>
     <p>The oscillation is the diagnostic signature of contradictory criteria. If you observe a reflection system&rsquo;s scores across rounds and see alternating highs and lows rather than monotonic improvement, you are watching contradictory criteria in operation. The fix is not more rounds. The fix is criteria revision.</p>
     <figure>
-      <img src="../assets/diagrams/Fig 3 Convergence.png" alt="Reflection convergence vs oscillation">
-      <figcaption>Figure 3: Oscillating scores are the diagnostic signature of contradictory criteria. The fix is always criteria revision &mdash; never model upgrade.</figcaption>
+      <img src="../assets/diagrams/Fig 3 Convergence.png" alt="Reflection convergence with coherent criteria">
+      <img src="../assets/diagrams/Fig 3 Oscillation.png" alt="Reflection oscillation with contradictory criteria">
+      <figcaption>Figure 3: Convergence (top) vs. oscillation (bottom). Oscillating scores are the diagnostic signature of contradictory criteria. The fix is always criteria revision &mdash; never model upgrade.</figcaption>
     </figure>
   </div>
 
